@@ -41,32 +41,61 @@ public class CardBehaviour : MonoBehaviour
 
     private void OnMouseEnter()
     {
+        SwitchColliders();
         this.transform.position += cardOverOffset;
     }
 
     private void OnMouseExit()
     {
+        SwitchColliders();
         this.transform.position -= cardOverOffset;
     }
 
     private void OnMouseDown()
     {
-        PlayCard();
+        if (userCardHand.GetHandState() == UserHand.HandState.PlayCard)
+        {
+            PlayCard();
+        }
     }
 
     private void PlayCard()
     {
         SetCardCheck(true);
+
         List<GameObject> userCardHandList = userCardHand.GetCardHand();
+
+        int cardRemovedId = userCardHandList.Count;
+
         for (int i = 0; i < userCardHandList.Count; i++)
         {
             if (userCardHandList[i].GetComponent<CardBehaviour>().GetCardCheck() == true)
             {
                 Destroy(userCardHandList[i].gameObject);
-                userCardHandList.RemoveAt(i);
+                cardRemovedId = i;
+            } 
+            else if (i > cardRemovedId)
+            {
+                userCardHandList[i].transform.position -= userCardHand.GetHandOffSet();
             }
         }
 
+        userCardHandList.RemoveAt(cardRemovedId);
+
         userCardHand.UpdateCardHand(userCardHandList);
+    }
+
+    private void SwitchColliders()
+    {
+        if (this.GetComponents<BoxCollider>()[0].enabled == true)
+        {
+            this.GetComponents<BoxCollider>()[0].enabled = false;
+            this.GetComponents<BoxCollider>()[1].enabled = true;
+        }
+        else if (this.GetComponents<BoxCollider>()[0].enabled == false)
+        {
+            this.GetComponents<BoxCollider>()[0].enabled = true;
+            this.GetComponents<BoxCollider>()[1].enabled = false;
+        }
     }
 }
