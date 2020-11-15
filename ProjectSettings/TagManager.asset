@@ -8,6 +8,7 @@ TagManager:
   - Table
   - Deck
   - Card
+  - PileOfCards
   layers:
   - Default
   - TransparentFX

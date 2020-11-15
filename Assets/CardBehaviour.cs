@@ -10,6 +10,26 @@ public class CardBehaviour : MonoBehaviour
 
     private UserHand userCardHand;
 
+    public enum CardState
+    {
+        CardInDeck,
+        CardInHand,
+        CardInPile
+    }
+
+    private CardState cardStateReference;
+
+    public CardState GetCardState()
+    {
+        return cardStateReference;
+    }
+
+    public CardState SetCardState(CardState cardState)
+    {
+        cardStateReference = cardState;
+        return cardStateReference;
+    }
+
     public bool GetCardCheck()
     {
         return playCardCheck;
@@ -41,27 +61,39 @@ public class CardBehaviour : MonoBehaviour
 
     private void OnMouseEnter()
     {
-        SwitchColliders();
-        this.transform.position += cardOverOffset;
+        if (cardStateReference == CardState.CardInHand)
+        {
+            SwitchColliders();
+        }
     }
 
     private void OnMouseExit()
     {
-        SwitchColliders();
-        this.transform.position -= cardOverOffset;
+        if (Input.GetAxis("Mouse X") != 0 || Input.GetAxis("Mouse Y") != 0)
+        {
+            if (cardStateReference == CardState.CardInHand)
+            {
+                SwitchColliders();
+            }
+        }
     }
 
     private void OnMouseDown()
     {
         if (userCardHand.GetHandState() == UserHand.HandState.PlayCard)
         {
-            PlayCard();
+            if (cardStateReference == CardState.CardInHand)
+            {
+                PlayCard();
+            }
         }
     }
 
     private void PlayCard()
     {
         SetCardCheck(true);
+
+        SetCardState(CardState.CardInPile);
 
         List<GameObject> userCardHandList = userCardHand.GetCardHand();
 
@@ -71,7 +103,8 @@ public class CardBehaviour : MonoBehaviour
         {
             if (userCardHandList[i].GetComponent<CardBehaviour>().GetCardCheck() == true)
             {
-                Destroy(userCardHandList[i].gameObject);
+                userCardHandList[i].transform.parent = userCardHand.GetDeck().GetComponent<DeckBehaviour>().GetPileOfCards().transform.parent;
+                userCardHandList[i].transform.SetPositionAndRotation(userCardHand.GetDeck().GetComponent<DeckBehaviour>().GetPileOfCards().transform.position, Quaternion.Euler(Vector3.zero));
                 cardRemovedId = i;
             } 
             else if (i > cardRemovedId)
@@ -91,11 +124,14 @@ public class CardBehaviour : MonoBehaviour
         {
             this.GetComponents<BoxCollider>()[0].enabled = false;
             this.GetComponents<BoxCollider>()[1].enabled = true;
+            this.transform.position += cardOverOffset;
         }
         else if (this.GetComponents<BoxCollider>()[0].enabled == false)
         {
             this.GetComponents<BoxCollider>()[0].enabled = true;
             this.GetComponents<BoxCollider>()[1].enabled = false;
+            this.transform.position -= cardOverOffset;
         }
     }
+
 }
