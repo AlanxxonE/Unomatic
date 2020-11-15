@@ -6,6 +6,8 @@ public class CardBehaviour : MonoBehaviour
 {
     private Vector3 cardOverOffset = new Vector3(0, 0.1f, -0.01f);
 
+    private Vector3 originalCardPos;
+
     private bool playCardCheck = false;
 
     private UserHand userCardHand;
@@ -28,6 +30,17 @@ public class CardBehaviour : MonoBehaviour
     {
         cardStateReference = cardState;
         return cardStateReference;
+    }
+
+    public Vector3 GetOriginalCardPos()
+    {
+        return originalCardPos;
+    }
+
+    public Vector3 SetOriginalCardPos(Vector3 originalPos)
+    {
+        originalCardPos = originalPos;
+        return originalCardPos;
     }
 
     public bool GetCardCheck()
@@ -64,16 +77,28 @@ public class CardBehaviour : MonoBehaviour
         if (cardStateReference == CardState.CardInHand)
         {
             SwitchColliders();
+            userCardHand.SetCardSelected(true);
+
+            if (this.transform.position == originalCardPos && userCardHand.GetCardHand().Count != 1)
+            {
+                this.transform.position += cardOverOffset;
+            }
         }
     }
 
     private void OnMouseExit()
     {
-        if (Input.GetAxis("Mouse X") != 0 || Input.GetAxis("Mouse Y") != 0)
+        if (cardStateReference == CardState.CardInHand)
         {
-            if (cardStateReference == CardState.CardInHand)
+            if (Input.GetAxis("Mouse X") != 0 || Input.GetAxis("Mouse Y") != 0)
             {
                 SwitchColliders();
+                userCardHand.SetCardSelected(false);
+            }
+
+            if (this.transform.position != originalCardPos && userCardHand.GetCardHand().Count != 1)
+            {
+                this.transform.position = originalCardPos;
             }
         }
     }
@@ -84,6 +109,11 @@ public class CardBehaviour : MonoBehaviour
         {
             if (cardStateReference == CardState.CardInHand)
             {
+                userCardHand.SetCardSelected(false);
+                if (this.transform.position != originalCardPos)
+                {
+                    this.transform.position = originalCardPos;
+                }
                 PlayCard();
             }
         }
@@ -110,6 +140,7 @@ public class CardBehaviour : MonoBehaviour
             else if (i > cardRemovedId)
             {
                 userCardHandList[i].transform.position -= userCardHand.GetHandOffSet();
+                userCardHandList[i].GetComponent<CardBehaviour>().SetOriginalCardPos(userCardHandList[i].transform.position);
             }
         }
 
@@ -120,18 +151,15 @@ public class CardBehaviour : MonoBehaviour
 
     private void SwitchColliders()
     {
-        if (this.GetComponents<BoxCollider>()[0].enabled == true)
+        if (userCardHand.GetCardSelected() == false)
         {
             this.GetComponents<BoxCollider>()[0].enabled = false;
             this.GetComponents<BoxCollider>()[1].enabled = true;
-            this.transform.position += cardOverOffset;
         }
-        else if (this.GetComponents<BoxCollider>()[0].enabled == false)
+        else
         {
             this.GetComponents<BoxCollider>()[0].enabled = true;
             this.GetComponents<BoxCollider>()[1].enabled = false;
-            this.transform.position -= cardOverOffset;
         }
     }
-
 }

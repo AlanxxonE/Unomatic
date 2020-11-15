@@ -6,6 +6,7 @@ public class UserHand : MonoBehaviour
 {
     private GameObject cardRef;
     private GameObject deckRef;
+    private bool cardSelected = false;
     private List<GameObject> cardHand = new List<GameObject>();
     private Vector3 userHandRot = new Vector3(-60, 0, 0);
     private Vector3 handOffSet = new Vector3(0.14f, 0, 0.001f);
@@ -19,6 +20,16 @@ public class UserHand : MonoBehaviour
 
     private HandState handStateReference;
 
+    public bool GetCardSelected()
+    {
+        return cardSelected;
+    }
+
+    public bool SetCardSelected(bool select)
+    {
+        cardSelected = select;
+        return cardSelected;
+    }
     public HandState GetHandState()
     {
         return handStateReference;
@@ -95,5 +106,6 @@ public class UserHand : MonoBehaviour
         cardHand[i].transform.parent = this.transform;
         cardHand[i].transform.position = this.transform.position + (i * handOffSet);
         cardHand[i].transform.eulerAngles = userHandRot;
+        cardHand[i].GetComponent<CardBehaviour>().SetOriginalCardPos(cardHand[i].transform.position);
     }
 }
