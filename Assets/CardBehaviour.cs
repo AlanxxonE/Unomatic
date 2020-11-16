@@ -12,6 +12,8 @@ public class CardBehaviour : MonoBehaviour
 
     private UserHand userCardHand;
 
+    public int uniqueCardID = 0;
+
     public enum CardState
     {
         CardInDeck,
@@ -105,9 +107,9 @@ public class CardBehaviour : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (userCardHand.GetHandState() == UserHand.HandState.PlayCard)
+        if (cardStateReference == CardState.CardInHand)
         {
-            if (cardStateReference == CardState.CardInHand)
+            if (userCardHand.GetHandState() == UserHand.HandState.PlayCard)
             {
                 userCardHand.SetCardSelected(false);
                 if (this.transform.position != originalCardPos)
@@ -133,8 +135,7 @@ public class CardBehaviour : MonoBehaviour
         {
             if (userCardHandList[i].GetComponent<CardBehaviour>().GetCardCheck() == true)
             {
-                userCardHandList[i].transform.parent = userCardHand.GetDeck().GetComponent<DeckBehaviour>().GetPileOfCards().transform.parent;
-                userCardHandList[i].transform.SetPositionAndRotation(userCardHand.GetDeck().GetComponent<DeckBehaviour>().GetPileOfCards().transform.position, Quaternion.Euler(Vector3.zero));
+                userCardHand.GetDeck().GetComponent<DeckBehaviour>().GetPileOfCards().AddCardToPile(userCardHandList[i]);
                 cardRemovedId = i;
             } 
             else if (i > cardRemovedId)

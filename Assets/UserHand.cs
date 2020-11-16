@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class UserHand : MonoBehaviour
 {
-    private GameObject cardRef;
     private GameObject deckRef;
+
     private bool cardSelected = false;
+
     private List<GameObject> cardHand = new List<GameObject>();
+
     private Vector3 userHandRot = new Vector3(-60, 0, 0);
     private Vector3 handOffSet = new Vector3(0.14f, 0, 0.001f);
 
@@ -73,11 +75,9 @@ public class UserHand : MonoBehaviour
     {
         handStateReference = HandState.WaitForTurn;
 
-        cardRef = GameObject.FindGameObjectWithTag("Card");
-
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < 7; i++)
         {
-            StartCoroutine("GenerateHand", i);
+            StartCoroutine("StartDraw", i);
         }
     }
 
@@ -87,23 +87,22 @@ public class UserHand : MonoBehaviour
 
     }
 
-    IEnumerator GenerateHand(int i)
+    IEnumerator StartDraw(int i)
     {
         yield return new WaitForSeconds(i * 0.4f);
-        GenerateCard(i);
-        if(cardHand.Count == 5)
+        DrawCardInHand(i);
+        if(cardHand.Count == 7)
         {
             handStateReference = HandState.PlayCard;
         }
     }
 
-    public void GenerateCard(int i)
+    public void DrawCardInHand(int i)
     {
-        GameObject cardClone = Instantiate(cardRef);
-        cardHand.Add(cardClone);
+        cardHand.Add(deckRef.GetComponent<DeckBehaviour>().DrawCard());
         cardHand[i].GetComponent<CardBehaviour>().SetCardState(CardBehaviour.CardState.CardInHand);
         cardHand[i].GetComponent<CardBehaviour>().SetUserHand(this.gameObject.GetComponent<UserHand>());
-        cardHand[i].transform.parent = this.transform;
+        cardHand[i].transform.SetParent(this.transform);
         cardHand[i].transform.position = this.transform.position + (i * handOffSet);
         cardHand[i].transform.eulerAngles = userHandRot;
         cardHand[i].GetComponent<CardBehaviour>().SetOriginalCardPos(cardHand[i].transform.position);
