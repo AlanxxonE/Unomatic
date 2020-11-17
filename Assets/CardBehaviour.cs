@@ -150,6 +150,8 @@ public class CardBehaviour : MonoBehaviour
 
     private void PlayCard()
     {
+        Debug.Log("___________________________________________________________________");
+
         SetCardCheck(true);
 
         SetCardState(CardState.CardInPile);
@@ -173,6 +175,11 @@ public class CardBehaviour : MonoBehaviour
         }
 
         userCardHandList.RemoveAt(cardRemovedId);
+
+        for (int i = 0; i < userCardHandList.Count; i++)
+        {
+            Debug.Log("CardInHANDNumber --> " + userCardHandList[i].GetComponent<CardBehaviour>().GetUniqueCardIDNumber() + " CardInHANDColor --> " + userCardHandList[i].GetComponent<CardBehaviour>().GetUniqueCardIDColor());
+        }
 
         userCardHand.UpdateCardHand(userCardHandList);
     }

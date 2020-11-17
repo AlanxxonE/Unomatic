@@ -66,6 +66,7 @@ public class PileOfCardsBehaviour : MonoBehaviour
         cardRef = cardToDisplay;
         cardRef.transform.SetParent(this.transform);
         cardRef.transform.SetPositionAndRotation(this.transform.position, Quaternion.Euler(Vector3.zero));
+        Debug.Log("CardInPILENumber --> " + cardToDisplay.GetComponent<CardBehaviour>().GetUniqueCardIDNumber() + " CardInPILEColor --> " + cardToDisplay.GetComponent<CardBehaviour>().GetUniqueCardIDColor());
         return cardRef;
     }
 }

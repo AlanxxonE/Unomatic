@@ -123,7 +123,7 @@ public class DeckBehaviour : MonoBehaviour
                         break;
                 }
 
-                Debug.Log("CardUniqueIDNumber = " + deckList[unoCardIndex].GetComponent<CardBehaviour>().GetUniqueCardIDNumber() + " CardUniqueIDColor = " + deckList[unoCardIndex].GetComponent<CardBehaviour>().GetUniqueCardIDColor());
+                //Debug.Log("CardUniqueIDNumber = " + deckList[unoCardIndex].GetComponent<CardBehaviour>().GetUniqueCardIDNumber() + " CardUniqueIDColor = " + deckList[unoCardIndex].GetComponent<CardBehaviour>().GetUniqueCardIDColor());
 
                 unoCardIndex++;
             }

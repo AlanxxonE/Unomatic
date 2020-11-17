@@ -106,5 +106,6 @@ public class UserHand : MonoBehaviour
         cardHand[i].transform.position = this.transform.position + (i * handOffSet);
         cardHand[i].transform.eulerAngles = userHandRot;
         cardHand[i].GetComponent<CardBehaviour>().SetOriginalCardPos(cardHand[i].transform.position);
+        Debug.Log("CardInHANDNumber --> " + cardHand[i].GetComponent<CardBehaviour>().GetUniqueCardIDNumber() + " CardInHANDColor --> " + cardHand[i].GetComponent<CardBehaviour>().GetUniqueCardIDColor());
     }
 }
