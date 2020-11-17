@@ -8,6 +8,8 @@ public class PileOfCardsBehaviour : MonoBehaviour
 
     private GameObject deckRef;
 
+    private Vector3 pileOffSett = new Vector3(0, -0.008f, 0);
+
     private List<GameObject> pileCardsList = new List<GameObject>();
 
     public List<GameObject> GetPileCard()
@@ -21,7 +23,7 @@ public class PileOfCardsBehaviour : MonoBehaviour
         {
             for(int i = 0; i < pileCardsList.Count; i++)
             {
-                pileCardsList[i].transform.Translate(0, -0.008f, 0);
+                pileCardsList[i].transform.Translate(pileOffSett);
             }
         }
 

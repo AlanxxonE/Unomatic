@@ -6,6 +6,8 @@ public class DeckBehaviour : MonoBehaviour
 {
     private List<GameObject> deckOfCards = new List<GameObject>();
 
+    private Vector3 deckOffSett = new Vector3(0, 0.002f, 0);
+
     private PileOfCardsBehaviour pileOfCardsRef;
 
     private UserHand userHandRef;
@@ -98,6 +100,7 @@ public class DeckBehaviour : MonoBehaviour
             deckList[i].GetComponent<CardBehaviour>().SetCardState(CardBehaviour.CardState.CardInDeck);
             deckList[i].transform.SetParent(this.transform);
             deckList[i].transform.position = this.transform.position;
+            deckList[i].transform.Translate(i * deckOffSett);
             deckList[i].GetComponent<CardBehaviour>().uniqueCardID = i;
             if (randomValue == 0)
             {
