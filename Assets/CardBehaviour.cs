@@ -12,8 +12,8 @@ public class CardBehaviour : MonoBehaviour
 
     private UserHand userCardHand;
 
-    public int uniqueCardIDNumber = 0;
-    public int uniqueCardIDColor = 0;
+    private int uniqueCardIDNumber = 0;
+    private int uniqueCardIDColor = 0;
 
     public enum CardState
     {
@@ -33,6 +33,28 @@ public class CardBehaviour : MonoBehaviour
     {
         cardStateReference = cardState;
         return cardStateReference;
+    }
+
+    public int GetUniqueCardIDNumber()
+    {
+        return uniqueCardIDNumber;
+    }
+
+    public int SetUniqueCardIDNumber(int uniqueID)
+    {
+        uniqueCardIDNumber = uniqueID;
+        return uniqueCardIDNumber;
+    }
+
+    public int GetUniqueCardIDColor()
+    {
+        return uniqueCardIDColor;
+    }
+
+    public int SetUniqueCardIDColor(int uniqueColor)
+    {
+        uniqueCardIDColor = uniqueColor;
+        return uniqueCardIDColor;
     }
 
     public Vector3 GetOriginalCardPos()
@@ -112,12 +134,16 @@ public class CardBehaviour : MonoBehaviour
         {
             if (userCardHand.GetHandState() == UserHand.HandState.PlayCard)
             {
-                userCardHand.SetCardSelected(false);
-                if (this.transform.position != originalCardPos)
+                if (userCardHand.GetDeck().GetComponent<DeckBehaviour>().GetPileOfCards().GetCardRef().GetComponent<CardBehaviour>().GetUniqueCardIDColor() == this.uniqueCardIDColor || userCardHand.GetDeck().GetComponent<DeckBehaviour>().GetPileOfCards().GetCardRef().GetComponent<CardBehaviour>().GetUniqueCardIDNumber() == this.uniqueCardIDNumber)
                 {
-                    this.transform.position = originalCardPos;
+                    userCardHand.SetCardSelected(false);
+                    if (this.transform.position != originalCardPos)
+                    {
+                        this.transform.position = originalCardPos;
+                    }
+
+                    PlayCard();
                 }
-                PlayCard();
             }
         }
     }

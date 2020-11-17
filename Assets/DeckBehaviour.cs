@@ -104,8 +104,8 @@ public class DeckBehaviour : MonoBehaviour
                 deckList[unoCardIndex].transform.position = this.transform.position;
                 deckList[unoCardIndex].transform.Translate(unoCardIndex * deckOffSett);
 
-                deckList[unoCardIndex].GetComponent<CardBehaviour>().uniqueCardIDNumber = unoNumbers;
-                deckList[unoCardIndex].GetComponent<CardBehaviour>().uniqueCardIDColor = unoColors % 4;
+                deckList[unoCardIndex].GetComponent<CardBehaviour>().SetUniqueCardIDNumber(unoNumbers);
+                deckList[unoCardIndex].GetComponent<CardBehaviour>().SetUniqueCardIDColor(unoColors % 4);
 
                 switch (unoColors % 4)
                 {
@@ -123,7 +123,7 @@ public class DeckBehaviour : MonoBehaviour
                         break;
                 }
 
-                Debug.Log("CardUniqueIDNumber = " + deckList[unoCardIndex].GetComponent<CardBehaviour>().uniqueCardIDNumber + " CardUniqueIDColor = " + deckList[unoCardIndex].GetComponent<CardBehaviour>().uniqueCardIDColor);
+                Debug.Log("CardUniqueIDNumber = " + deckList[unoCardIndex].GetComponent<CardBehaviour>().GetUniqueCardIDNumber() + " CardUniqueIDColor = " + deckList[unoCardIndex].GetComponent<CardBehaviour>().GetUniqueCardIDColor());
 
                 unoCardIndex++;
             }
