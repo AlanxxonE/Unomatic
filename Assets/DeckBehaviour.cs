@@ -92,24 +92,58 @@ public class DeckBehaviour : MonoBehaviour
 
     public void GenerateDeck(List<GameObject> deckList)
     {
-        for (int i = 0; i < 72; i++)
+        int unoCardIndex = 0;
+        for (int unoNumbers = 0; unoNumbers < 9; unoNumbers++)
         {
-            int randomValue = Random.Range(0, 2);
-            GameObject cardClone = Instantiate(cardRef);
-            deckList.Add(cardClone);
-            deckList[i].GetComponent<CardBehaviour>().SetCardState(CardBehaviour.CardState.CardInDeck);
-            deckList[i].transform.SetParent(this.transform);
-            deckList[i].transform.position = this.transform.position;
-            deckList[i].transform.Translate(i * deckOffSett);
-            deckList[i].GetComponent<CardBehaviour>().uniqueCardID = i;
-            if (randomValue == 0)
+            for(int unoColors = 0; unoColors < 8; unoColors++)
             {
-                deckList[i].GetComponent<Renderer>().material.color = Color.green;
-            }
-            else
-            {
-                deckList[i].GetComponent<Renderer>().material.color = Color.white;
+                GameObject cardClone = Instantiate(cardRef);
+                deckList.Add(cardClone);
+                deckList[unoCardIndex].GetComponent<CardBehaviour>().SetCardState(CardBehaviour.CardState.CardInDeck);
+                deckList[unoCardIndex].transform.SetParent(this.transform);
+                deckList[unoCardIndex].transform.position = this.transform.position;
+                deckList[unoCardIndex].transform.Translate(unoCardIndex * deckOffSett);
+
+                deckList[unoCardIndex].GetComponent<CardBehaviour>().uniqueCardIDNumber = unoNumbers;
+                deckList[unoCardIndex].GetComponent<CardBehaviour>().uniqueCardIDColor = unoColors % 4;
+
+                switch (unoColors % 4)
+                {
+                    case 0:
+                        deckList[unoCardIndex].GetComponent<Renderer>().material.color = Color.yellow;
+                        break;
+                    case 1:
+                        deckList[unoCardIndex].GetComponent<Renderer>().material.color = Color.green;
+                        break;
+                    case 2:
+                        deckList[unoCardIndex].GetComponent<Renderer>().material.color = Color.blue;
+                        break;
+                    case 3:
+                        deckList[unoCardIndex].GetComponent<Renderer>().material.color = Color.red;
+                        break;
+                }
+
+                Debug.Log("CardUniqueIDNumber = " + deckList[unoCardIndex].GetComponent<CardBehaviour>().uniqueCardIDNumber + " CardUniqueIDColor = " + deckList[unoCardIndex].GetComponent<CardBehaviour>().uniqueCardIDColor);
+
+                unoCardIndex++;
             }
         }
+
+        ShuffleDeck(deckList);
     }
+
+    public void ShuffleDeck(List<GameObject> deckList)
+    {
+        for(int numberOfCard= 0; numberOfCard < deckList.Count; numberOfCard++)
+        {
+            GameObject tempCard = deckList[numberOfCard];
+
+            int randomIndex = Random.Range(numberOfCard, deckList.Count);
+
+            deckList[numberOfCard] = deckList[randomIndex];
+
+            deckList[randomIndex] = tempCard;
+        }
+    }
+
 }

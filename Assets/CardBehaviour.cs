@@ -12,7 +12,8 @@ public class CardBehaviour : MonoBehaviour
 
     private UserHand userCardHand;
 
-    public int uniqueCardID = 0;
+    public int uniqueCardIDNumber = 0;
+    public int uniqueCardIDColor = 0;
 
     public enum CardState
     {
