@@ -14,6 +14,8 @@ public class DeckBehaviour : MonoBehaviour
 
     private GameObject cardRef;
 
+    private bool ableToDraw = false;
+
     public List<GameObject> GetDeckOfCards()
     {
         return deckOfCards;
@@ -62,31 +64,30 @@ public class DeckBehaviour : MonoBehaviour
 
     private void OnMouseDown()
     {
-        //int cardHandCounter = 0;
-
-        //for (int i = 0; i < userHandRef.GetCardHand().Count; i++)
-        //{
-        //    if(userHandRef.GetCardHand()[i].GetComponent<CardBehaviour>().GetCardCheck() == false)
-        //    {
-        //        cardHandCounter++;
-        //    }
-        //}
-
-        //if(cardHandCounter == userHandRef.GetCardHand().Count)
-        //{
-        //    userHandRef.SetHandState(UserHand.HandState.DrawCard);
-        //}
-
-        //if (userHandRef.GetHandState() == UserHand.HandState.DrawCard)
-        //{
-        //    userHandRef.DrawCardInHand(userHandRef.GetCardHand().Count);
-
-        //    userHandRef.SetHandState(UserHand.HandState.PlayCard);
-        //}
-
         if (deckOfCards.Count != 0)
         {
-            userHandRef.DrawCardInHand(userHandRef.GetCardHand().Count);
+            checkHandToDraw();
+
+            if (ableToDraw == true)
+            {
+                userHandRef.SetHandState(UserHand.HandState.DrawCard);
+            }
+
+            if (userHandRef.GetHandState() == UserHand.HandState.DrawCard)
+            {
+                userHandRef.DrawCardInHand(userHandRef.GetCardHand().Count);
+
+                checkHandToDraw();
+
+                if(ableToDraw == true)
+                {
+                    userHandRef.SetHandState(UserHand.HandState.WaitForTurn);
+                }
+                else
+                {
+                    userHandRef.SetHandState(UserHand.HandState.PlayCard);
+                }
+            }
         }
     }
 
@@ -146,4 +147,30 @@ public class DeckBehaviour : MonoBehaviour
         }
     }
 
+    private bool checkHandToDraw()
+    {
+        int cardHandCounter = 0;
+
+        bool checkDraw = false;
+
+        for (int i = 0; i < userHandRef.GetCardHand().Count; i++)
+        {
+            if (userHandRef.GetCardHand()[i].GetComponent<CardBehaviour>().GetUniqueCardIDNumber() != pileOfCardsRef.GetCardRef().GetComponent<CardBehaviour>().GetUniqueCardIDNumber() && userHandRef.GetCardHand()[i].GetComponent<CardBehaviour>().GetUniqueCardIDColor() != pileOfCardsRef.GetCardRef().GetComponent<CardBehaviour>().GetUniqueCardIDColor())
+            {
+                cardHandCounter++;
+            }
+        }
+
+        if (cardHandCounter == userHandRef.GetCardHand().Count && userHandRef.GetHandState() != UserHand.HandState.WaitForTurn)
+        {
+            checkDraw = true;
+        }
+        else
+        {
+            checkDraw = false;
+        }
+
+        ableToDraw = checkDraw;
+        return ableToDraw;
+    }
 }

@@ -84,7 +84,13 @@ public class UserHand : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            if (handStateReference == HandState.WaitForTurn)
+            {
+                handStateReference = HandState.PlayCard;
+            }
+        }
     }
 
     IEnumerator StartDraw(int i)

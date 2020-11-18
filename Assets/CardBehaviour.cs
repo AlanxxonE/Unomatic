@@ -182,6 +182,8 @@ public class CardBehaviour : MonoBehaviour
         }
 
         userCardHand.UpdateCardHand(userCardHandList);
+
+        userCardHand.SetHandState(UserHand.HandState.WaitForTurn);
     }
 
     private void SwitchColliders()
