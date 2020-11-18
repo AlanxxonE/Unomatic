@@ -14,7 +14,19 @@ public class DeckBehaviour : MonoBehaviour
 
     private GameObject cardRef;
 
+    private GameManager gMRef;
+
     private bool ableToDraw = false;
+
+    public GameManager GetGMRef()
+    {
+        return gMRef;
+    }
+
+    public UserHand GetUserHand()
+    {
+        return userHandRef;
+    }
 
     public List<GameObject> GetDeckOfCards()
     {
@@ -26,6 +38,9 @@ public class DeckBehaviour : MonoBehaviour
         GameObject cardToDraw = deckOfCards[deckOfCards.Count - 1];
 
         deckOfCards.RemoveAt(deckOfCards.Count - 1);
+
+        cardToDraw.GetComponent<CardBehaviour>().GetAddedPrintedNumberRef().SetActive(true);
+        cardToDraw.GetComponent<Renderer>().material.color -= Color.white;
 
         return cardToDraw;
     }
@@ -43,6 +58,8 @@ public class DeckBehaviour : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        gMRef = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
+
         cardRef = GameObject.FindGameObjectWithTag("Card");
 
         userHandRef = GameObject.FindGameObjectWithTag("User").GetComponentInChildren<UserHand>();
@@ -75,6 +92,8 @@ public class DeckBehaviour : MonoBehaviour
 
             if (userHandRef.GetHandState() == UserHand.HandState.DrawCard)
             {
+                gMRef.checkInteractiveButton(false);
+
                 userHandRef.DrawCardInHand(userHandRef.GetCardHand().Count);
 
                 checkHandToDraw();
@@ -109,22 +128,23 @@ public class DeckBehaviour : MonoBehaviour
                 deckList[unoCardIndex].GetComponent<CardBehaviour>().SetUniqueCardIDNumber(unoNumbers);
 
                 deckList[unoCardIndex].GetComponent<CardBehaviour>().AddPrintedNumbers(deckList[unoCardIndex].GetComponent<CardBehaviour>().GetUniqueCardIDNumber());
+                deckList[unoCardIndex].GetComponent<CardBehaviour>().GetAddedPrintedNumberRef().SetActive(false);
 
                 deckList[unoCardIndex].GetComponent<CardBehaviour>().SetUniqueCardIDColor(unoColors % 4);
 
                 switch (unoColors % 4)
                 {
                     case 0:
-                        deckList[unoCardIndex].GetComponent<Renderer>().material.color = Color.yellow;
+                        deckList[unoCardIndex].GetComponent<Renderer>().material.color = Color.yellow + Color.white;
                         break;
                     case 1:
-                        deckList[unoCardIndex].GetComponent<Renderer>().material.color = Color.green;
+                        deckList[unoCardIndex].GetComponent<Renderer>().material.color = Color.green + Color.white;
                         break;
                     case 2:
-                        deckList[unoCardIndex].GetComponent<Renderer>().material.color = Color.blue;
+                        deckList[unoCardIndex].GetComponent<Renderer>().material.color = Color.blue + Color.white;
                         break;
                     case 3:
-                        deckList[unoCardIndex].GetComponent<Renderer>().material.color = Color.red;
+                        deckList[unoCardIndex].GetComponent<Renderer>().material.color = Color.red + Color.white;
                         break;
                 }
 

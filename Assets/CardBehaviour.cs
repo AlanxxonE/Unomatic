@@ -17,6 +17,9 @@ public class CardBehaviour : MonoBehaviour
     private int uniqueCardIDNumber = 0;
     private int uniqueCardIDColor = 0;
 
+    private GameObject printedNumberRef;
+    private GameObject printedNumberToAdd;
+
     public enum CardState
     {
         CardInDeck,
@@ -35,6 +38,11 @@ public class CardBehaviour : MonoBehaviour
     {
         cardStateReference = cardState;
         return cardStateReference;
+    }
+
+    public GameObject GetAddedPrintedNumberRef()
+    {
+        return printedNumberToAdd;
     }
 
     public int GetUniqueCardIDNumber()
@@ -185,7 +193,13 @@ public class CardBehaviour : MonoBehaviour
 
         userCardHand.UpdateCardHand(userCardHandList);
 
-        userCardHand.SetHandState(UserHand.HandState.WaitForTurn);
+        if(userCardHandList.Count == 1)
+        {
+            userCardHand.GetDeck().GetComponent<DeckBehaviour>().GetGMRef().checkInteractiveButton(true);
+        }
+        //userCardHand.UpdateCardHand(userCardHandList);
+
+        //userCardHand.SetHandState(UserHand.HandState.WaitForTurn);
     }
 
     private void SwitchColliders()
@@ -204,9 +218,9 @@ public class CardBehaviour : MonoBehaviour
 
     public void AddPrintedNumbers(int uniqueNumber)
     {
-        GameObject printedNumberRef = GameObject.FindGameObjectWithTag(uniqueNumber.ToString());
+        printedNumberRef = GameObject.FindGameObjectWithTag(uniqueNumber.ToString());
 
-        GameObject printedNumberToAdd = Instantiate(printedNumberRef);
+        printedNumberToAdd = Instantiate(printedNumberRef);
 
         printedNumberToAdd.transform.SetParent(this.transform);
         printedNumberToAdd.transform.position = this.transform.position + printedNumberOffset;

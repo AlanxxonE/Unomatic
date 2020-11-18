@@ -8,7 +8,9 @@ public class PileOfCardsBehaviour : MonoBehaviour
 
     private GameObject deckRef;
 
-    private Vector3 pileOffSett = new Vector3(0, -0.008f, 0);
+    private GameObject cardToShow;
+
+    private Vector3 pileOffSett = new Vector3(0, -0.08f, 0);
 
     private List<GameObject> pileCardsList = new List<GameObject>();
 
@@ -23,7 +25,11 @@ public class PileOfCardsBehaviour : MonoBehaviour
         {
             for(int i = 0; i < pileCardsList.Count; i++)
             {
-                pileCardsList[i].transform.Translate(pileOffSett);
+                //pileCardsList[i].transform.Translate(pileOffSett);
+                if (pileCardsList[i].activeSelf == true)
+                {
+                    pileCardsList[i].SetActive(false);
+                }
             }
         }
 
@@ -59,6 +65,23 @@ public class PileOfCardsBehaviour : MonoBehaviour
     void Update()
     {
         
+    }
+
+    private void OnMouseEnter()
+    {
+        cardToShow = Instantiate(cardRef);
+        cardToShow.GetComponent<BoxCollider>().enabled = false;
+        cardToShow.transform.SetPositionAndRotation(this.transform.position + (Vector3.up / 2), Quaternion.Euler(new Vector3(-90, 0, 0)));
+        cardToShow.transform.Translate(Vector3.left / 2);
+        cardToShow.transform.localScale *= 2;
+    }
+
+    private void OnMouseExit()
+    {
+        if (cardToShow != null)
+        {
+            Destroy(cardToShow);
+        }
     }
 
     private GameObject DisplayLastCardInPile(GameObject cardToDisplay)

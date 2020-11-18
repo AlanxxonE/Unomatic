@@ -13,6 +13,8 @@ public class UserHand : MonoBehaviour
     private Vector3 userHandRot = new Vector3(-60, 0, 0);
     private Vector3 handOffSet = new Vector3(0.14f, 0, 0.001f);
 
+    private bool checkBeginOfRound = false;
+
     public enum HandState
     {
         WaitForTurn,
@@ -84,11 +86,22 @@ public class UserHand : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (checkBeginOfRound == true)
         {
-            if (handStateReference == HandState.WaitForTurn)
+            if (Input.GetKeyDown(KeyCode.Space))
             {
-                handStateReference = HandState.PlayCard;
+                if (handStateReference == HandState.WaitForTurn)
+                {
+                    handStateReference = HandState.PlayCard;
+
+                    deckRef.GetComponent<DeckBehaviour>().GetGMRef().StartOfTurn(this.GetComponent<UserHand>());
+                }
+                else
+                {
+                    handStateReference = HandState.WaitForTurn;
+
+                    deckRef.GetComponent<DeckBehaviour>().GetGMRef().EndOfTurn(this.GetComponent<UserHand>());
+                }
             }
         }
     }
@@ -100,6 +113,7 @@ public class UserHand : MonoBehaviour
         if(cardHand.Count == 7)
         {
             handStateReference = HandState.PlayCard;
+            checkBeginOfRound = true;
         }
     }
 

@@ -19,6 +19,8 @@ TagManager:
   - 7
   - 8
   - 9
+  - UnoButton
+  - GameManager
   layers:
   - Default
   - TransparentFX
