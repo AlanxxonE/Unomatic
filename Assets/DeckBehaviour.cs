@@ -94,6 +94,7 @@ public class DeckBehaviour : MonoBehaviour
     public void GenerateDeck(List<GameObject> deckList)
     {
         int unoCardIndex = 0;
+
         for (int unoNumbers = 0; unoNumbers < 9; unoNumbers++)
         {
             for(int unoColors = 0; unoColors < 8; unoColors++)
@@ -104,6 +105,7 @@ public class DeckBehaviour : MonoBehaviour
                 deckList[unoCardIndex].transform.SetParent(this.transform);
                 deckList[unoCardIndex].transform.position = this.transform.position;
                 deckList[unoCardIndex].transform.Translate(unoCardIndex * deckOffSett);
+                AddPrintedNumbers(deckList[unoCardIndex]);
 
                 deckList[unoCardIndex].GetComponent<CardBehaviour>().SetUniqueCardIDNumber(unoNumbers);
                 deckList[unoCardIndex].GetComponent<CardBehaviour>().SetUniqueCardIDColor(unoColors % 4);
@@ -131,6 +133,20 @@ public class DeckBehaviour : MonoBehaviour
         }
 
         ShuffleDeck(deckList);
+    }
+
+    public List<GameObject> AddPrintedNumbers(GameObject cardRef)
+    {
+        List<GameObject> listOfPrintedNumbers = new List<GameObject>();
+
+        for (int numberOfPrintedNumbers = 0; numberOfPrintedNumbers < 10; numberOfPrintedNumbers++)
+        {
+            listOfPrintedNumbers.Add(cardRef.GetComponentsInChildren<Transform>()[numberOfPrintedNumbers].gameObject);
+            //listOfPrintedNumbers[numberOfPrintedNumbers].SetActive(false);
+            Debug.Log(listOfPrintedNumbers[numberOfPrintedNumbers].gameObject.name);
+        }
+
+        return listOfPrintedNumbers;
     }
 
     public void ShuffleDeck(List<GameObject> deckList)
