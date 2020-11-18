@@ -6,6 +6,8 @@ public class CardBehaviour : MonoBehaviour
 {
     private Vector3 cardOverOffset = new Vector3(0, 0.1f, -0.01f);
 
+    private Vector3 printedNumberOffset = new Vector3(0, 0.01f, 0);
+
     private Vector3 originalCardPos;
 
     private bool playCardCheck = false;
@@ -198,5 +200,15 @@ public class CardBehaviour : MonoBehaviour
             this.GetComponents<BoxCollider>()[0].enabled = true;
             this.GetComponents<BoxCollider>()[1].enabled = false;
         }
+    }
+
+    public void AddPrintedNumbers(int uniqueNumber)
+    {
+        GameObject printedNumberRef = GameObject.FindGameObjectWithTag(uniqueNumber.ToString());
+
+        GameObject printedNumberToAdd = Instantiate(printedNumberRef);
+
+        printedNumberToAdd.transform.SetParent(this.transform);
+        printedNumberToAdd.transform.position = this.transform.position + printedNumberOffset;
     }
 }
