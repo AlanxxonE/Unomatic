@@ -78,7 +78,7 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("STARTOFTURN!");
 
-        if (handOfUser.GetCardHand().Count == 2)
+        if(handOfUser.GetCardHand().Count == 1)
         {
             checkInteractiveButton(false);
         }
@@ -98,10 +98,20 @@ public class GameManager : MonoBehaviour
         }
         else if(handOfUser.GetCardHand().Count == 0)
         {
-            if(unoCall == true)
-            {
-                Debug.Log("WONTHEMATCH!");
-            }
+            Debug.Log("WONTHEMATCH!");
         }
+    }
+
+    public IEnumerator AITurn()
+    {
+        EndOfTurn(deckRef.GetComponent<DeckBehaviour>().GetUserHand());
+
+        deckRef.GetComponent<DeckBehaviour>().GetUserHand().SetHandState(UserHand.HandState.WaitForTurn);
+
+        yield return new WaitForSeconds(1);
+        
+        StartOfTurn(deckRef.GetComponent<DeckBehaviour>().GetUserHand());
+
+        deckRef.GetComponent<DeckBehaviour>().GetUserHand().SetHandState(UserHand.HandState.PlayCard);
     }
 }

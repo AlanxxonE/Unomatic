@@ -193,10 +193,13 @@ public class CardBehaviour : MonoBehaviour
 
         userCardHand.UpdateCardHand(userCardHandList);
 
-        if(userCardHandList.Count == 1)
+        if(userCardHandList.Count == 2)
         {
             userCardHand.GetDeck().GetComponent<DeckBehaviour>().GetGMRef().checkInteractiveButton(true);
         }
+
+        StartCoroutine(userCardHand.GetDeck().GetComponent<DeckBehaviour>().GetGMRef().AITurn());
+
         //userCardHand.UpdateCardHand(userCardHandList);
 
         //userCardHand.SetHandState(UserHand.HandState.WaitForTurn);

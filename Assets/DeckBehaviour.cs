@@ -92,15 +92,13 @@ public class DeckBehaviour : MonoBehaviour
 
             if (userHandRef.GetHandState() == UserHand.HandState.DrawCard)
             {
-                gMRef.checkInteractiveButton(false);
-
                 userHandRef.DrawCardInHand(userHandRef.GetCardHand().Count);
 
                 checkHandToDraw();
 
                 if(ableToDraw == true)
                 {
-                    userHandRef.SetHandState(UserHand.HandState.WaitForTurn);
+                    StartCoroutine(gMRef.AITurn());
                 }
                 else
                 {

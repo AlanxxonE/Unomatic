@@ -112,7 +112,9 @@ public class UserHand : MonoBehaviour
         DrawCardInHand(i);
         if(cardHand.Count == 7)
         {
-            handStateReference = HandState.PlayCard;
+            StartCoroutine(deckRef.GetComponent<DeckBehaviour>().GetGMRef().AITurn());
+
+            //handStateReference = HandState.PlayCard;
             checkBeginOfRound = true;
         }
     }
