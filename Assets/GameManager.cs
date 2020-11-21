@@ -109,9 +109,12 @@ public class GameManager : MonoBehaviour
         deckRef.GetComponent<DeckBehaviour>().GetUserHand().SetHandState(UserHand.HandState.WaitForTurn);
 
         yield return new WaitForSeconds(1);
-        
-        StartOfTurn(deckRef.GetComponent<DeckBehaviour>().GetUserHand());
 
-        deckRef.GetComponent<DeckBehaviour>().GetUserHand().SetHandState(UserHand.HandState.PlayCard);
+        if (deckRef.GetComponent<DeckBehaviour>().GetUserHand().GetCardHand().Count != 0)
+        {
+            StartOfTurn(deckRef.GetComponent<DeckBehaviour>().GetUserHand());
+
+            deckRef.GetComponent<DeckBehaviour>().GetUserHand().SetHandState(UserHand.HandState.PlayCard);
+        }
     }
 }

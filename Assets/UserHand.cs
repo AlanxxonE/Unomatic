@@ -17,7 +17,7 @@ public class UserHand : MonoBehaviour
 
     private bool handMoving = false;
 
-    private int cardHandStartNumber = 20;
+    private int cardHandStartNumber = 7;
 
     public enum HandState
     {
