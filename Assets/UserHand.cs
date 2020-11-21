@@ -15,6 +15,10 @@ public class UserHand : MonoBehaviour
 
     private bool checkBeginOfRound = false;
 
+    private bool handMoving = false;
+
+    private int cardHandStartNumber = 20;
+
     public enum HandState
     {
         WaitForTurn,
@@ -23,6 +27,11 @@ public class UserHand : MonoBehaviour
     }
 
     private HandState handStateReference;
+
+    public bool GetHandMovement()
+    {
+        return handMoving;
+    }
 
     public bool GetCardSelected()
     {
@@ -77,7 +86,7 @@ public class UserHand : MonoBehaviour
     {
         handStateReference = HandState.WaitForTurn;
 
-        for (int i = 0; i < 7; i++)
+        for (int i = 0; i < cardHandStartNumber; i++)
         {
             StartCoroutine("StartDraw", i);
         }
@@ -104,13 +113,59 @@ public class UserHand : MonoBehaviour
                 }
             }
         }
+
+        if (Input.GetMouseButton(1))
+        {
+            if(handMoving == false)
+            {
+                handMoving = true;
+
+                for (int i = 0; i < cardHand.Count; i++)
+                {
+                    if (cardHand[i].transform.position != cardHand[i].GetComponent<CardBehaviour>().GetOriginalCardPos() && cardHand.Count != 1)
+                    {
+                        cardHand[i].transform.position = cardHand[i].GetComponent<CardBehaviour>().GetOriginalCardPos();
+                    }
+                }
+            }
+
+            if (Input.mousePosition.y < Screen.height / 2)
+            {
+                if (Input.mousePosition.x > Screen.width / 2)
+                {
+                    if (this.cardHand[0].transform.position.x < -0.5f)
+                    {
+                        this.transform.Translate(0.01f, 0, 0);
+                    }
+                }
+                else
+                {
+                    if (this.cardHand[0].transform.position.x > (-0.11f * cardHand.Count))
+                    {
+                        this.transform.Translate(-0.01f, 0, 0);
+                    }
+                }
+            }
+        }
+        else
+        {
+            if(handMoving == true)
+            {
+                for(int i = 0; i < cardHand.Count; i++)
+                {
+                    cardHand[i].GetComponent<CardBehaviour>().SetOriginalCardPos(cardHand[i].transform.position);
+                }
+
+                handMoving = false;
+            }
+        }
     }
 
     IEnumerator StartDraw(int i)
     {
         yield return new WaitForSeconds(i * 0.4f);
         DrawCardInHand(i);
-        if(cardHand.Count == 7)
+        if(cardHand.Count == cardHandStartNumber)
         {
             StartCoroutine(deckRef.GetComponent<DeckBehaviour>().GetGMRef().AITurn());
 

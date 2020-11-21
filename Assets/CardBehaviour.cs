@@ -109,31 +109,37 @@ public class CardBehaviour : MonoBehaviour
 
     private void OnMouseEnter()
     {
-        if (cardStateReference == CardState.CardInHand)
+        if (userCardHand.GetHandMovement() == false)
         {
-            SwitchColliders();
-            userCardHand.SetCardSelected(true);
-
-            if (this.transform.position == originalCardPos && userCardHand.GetCardHand().Count != 1)
+            if (cardStateReference == CardState.CardInHand)
             {
-                this.transform.position += cardOverOffset;
+                SwitchColliders();
+                userCardHand.SetCardSelected(true);
+
+                if (this.transform.position == originalCardPos && userCardHand.GetCardHand().Count != 1)
+                {
+                    this.transform.position += cardOverOffset;
+                }
             }
         }
     }
 
     private void OnMouseExit()
     {
-        if (cardStateReference == CardState.CardInHand)
+        if (userCardHand.GetHandMovement() == false)
         {
-            if (Input.GetAxis("Mouse X") != 0 || Input.GetAxis("Mouse Y") != 0)
+            if (cardStateReference == CardState.CardInHand)
             {
-                SwitchColliders();
-                userCardHand.SetCardSelected(false);
-            }
+                if (Input.GetAxis("Mouse X") != 0 || Input.GetAxis("Mouse Y") != 0)
+                {
+                    SwitchColliders();
+                    userCardHand.SetCardSelected(false);
+                }
 
-            if (this.transform.position != originalCardPos && userCardHand.GetCardHand().Count != 1)
-            {
-                this.transform.position = originalCardPos;
+                if (this.transform.position != originalCardPos && userCardHand.GetCardHand().Count != 1)
+                {
+                    this.transform.position = originalCardPos;
+                }
             }
         }
     }
