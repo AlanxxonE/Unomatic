@@ -78,7 +78,7 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("STARTOFTURN!");
 
-        if(handOfUser.GetCardHand().Count == 2)
+        if(handOfUser.GetCardHand().Count <= 2)
         {
             checkInteractiveButton(true);
         }
