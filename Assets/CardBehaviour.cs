@@ -109,7 +109,7 @@ public class CardBehaviour : MonoBehaviour
 
     private void OnMouseEnter()
     {
-        if (userCardHand.GetHandMovement() == false)
+        if (userCardHand != null && userCardHand.GetHandMovement() == false)
         {
             if (cardStateReference == CardState.CardInHand)
             {

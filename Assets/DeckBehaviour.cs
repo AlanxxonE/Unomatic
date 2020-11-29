@@ -102,6 +102,10 @@ public class DeckBehaviour : MonoBehaviour
                 }
                 else
                 {
+                    if(userHandRef.GetCardHand().Count == 2)
+                    {
+                        gMRef.checkInteractiveButton(true);
+                    }
                     userHandRef.SetHandState(UserHand.HandState.PlayCard);
                 }
             }
