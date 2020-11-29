@@ -21,6 +21,7 @@ TagManager:
   - 9
   - UnoButton
   - GameManager
+  - AI
   layers:
   - Default
   - TransparentFX

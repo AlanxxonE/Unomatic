@@ -104,13 +104,19 @@ public class GameManager : MonoBehaviour
 
     public IEnumerator AITurn()
     {
+        yield return new WaitForSeconds(1);
+
         EndOfTurn(deckRef.GetComponent<DeckBehaviour>().GetUserHand());
 
         deckRef.GetComponent<DeckBehaviour>().GetUserHand().SetHandState(UserHand.HandState.WaitForTurn);
 
         yield return new WaitForSeconds(1);
 
-        if (deckRef.GetComponent<DeckBehaviour>().GetUserHand().GetCardHand().Count != 0)
+        deckRef.GetComponent<DeckBehaviour>().GetAIHand().SetHandState(UserHand.HandState.PlayCard);
+
+        deckRef.GetComponent<DeckBehaviour>().GetAIHand().GetComponentInParent<AIBehaviour>().CheckAIHand();
+
+        if (deckRef.GetComponent<DeckBehaviour>().GetUserHand().GetCardHand().Count != 0 && deckRef.GetComponent<DeckBehaviour>().GetAIHand().GetCardHand().Count != 0)
         {
             StartOfTurn(deckRef.GetComponent<DeckBehaviour>().GetUserHand());
 

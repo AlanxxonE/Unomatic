@@ -19,6 +19,8 @@ public class UserHand : MonoBehaviour
 
     private int cardHandStartNumber = 7;
 
+    private string userTag = " ";
+
     public enum HandState
     {
         WaitForTurn,
@@ -27,6 +29,11 @@ public class UserHand : MonoBehaviour
     }
 
     private HandState handStateReference;
+
+    public string GetUserTag()
+    {
+        return userTag;
+    }
 
     public bool GetHandMovement()
     {
@@ -84,6 +91,8 @@ public class UserHand : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        userTag = transform.root.gameObject.tag;
+
         handStateReference = HandState.WaitForTurn;
 
         for (int i = 0; i < cardHandStartNumber; i++)
@@ -116,33 +125,36 @@ public class UserHand : MonoBehaviour
 
         if (Input.GetMouseButton(1))
         {
-            if(handMoving == false)
+            if (userTag != "AI")
             {
-                handMoving = true;
-
-                for (int i = 0; i < cardHand.Count; i++)
+                if (handMoving == false)
                 {
-                    if (cardHand[i].transform.position != cardHand[i].GetComponent<CardBehaviour>().GetOriginalCardPos() && cardHand.Count != 1)
+                    handMoving = true;
+
+                    for (int i = 0; i < cardHand.Count; i++)
                     {
-                        cardHand[i].transform.position = cardHand[i].GetComponent<CardBehaviour>().GetOriginalCardPos();
+                        if (cardHand[i].transform.position != cardHand[i].GetComponent<CardBehaviour>().GetOriginalCardPos() && cardHand.Count != 1)
+                        {
+                            cardHand[i].transform.position = cardHand[i].GetComponent<CardBehaviour>().GetOriginalCardPos();
+                        }
                     }
                 }
-            }
 
-            if (Input.mousePosition.y < Screen.height / 2)
-            {
-                if (Input.mousePosition.x > Screen.width / 2)
+                if (Input.mousePosition.y < Screen.height / 2)
                 {
-                    if (this.cardHand[0].transform.position.x < -0.5f)
+                    if (Input.mousePosition.x > Screen.width / 2)
                     {
-                        this.transform.Translate(0.01f, 0, 0);
+                        if (this.cardHand[0].transform.position.x < -0.5f)
+                        {
+                            this.transform.Translate(0.01f, 0, 0);
+                        }
                     }
-                }
-                else
-                {
-                    if (this.cardHand[0].transform.position.x > (-0.11f * cardHand.Count))
+                    else
                     {
-                        this.transform.Translate(-0.01f, 0, 0);
+                        if (this.cardHand[0].transform.position.x > (-0.11f * cardHand.Count))
+                        {
+                            this.transform.Translate(-0.01f, 0, 0);
+                        }
                     }
                 }
             }
@@ -167,7 +179,10 @@ public class UserHand : MonoBehaviour
         DrawCardInHand(i);
         if(cardHand.Count == cardHandStartNumber)
         {
-            StartCoroutine(deckRef.GetComponent<DeckBehaviour>().GetGMRef().AITurn());
+            if (userTag != "AI")
+            {
+                StartCoroutine(deckRef.GetComponent<DeckBehaviour>().GetGMRef().AITurn());
+            }
 
             //handStateReference = HandState.PlayCard;
             checkBeginOfRound = true;
@@ -177,12 +192,20 @@ public class UserHand : MonoBehaviour
     public void DrawCardInHand(int i)
     {
         cardHand.Add(deckRef.GetComponent<DeckBehaviour>().DrawCard());
-        cardHand[i].GetComponent<CardBehaviour>().SetCardState(CardBehaviour.CardState.CardInHand);
         cardHand[i].GetComponent<CardBehaviour>().SetUserHand(this.gameObject.GetComponent<UserHand>());
         cardHand[i].transform.SetParent(this.transform);
         cardHand[i].transform.position = this.transform.position + (i * handOffSet);
-        cardHand[i].transform.eulerAngles = userHandRot;
+        if (cardHand[i].transform.root.gameObject.tag == "AI")
+        {
+            cardHand[i].GetComponent<CardBehaviour>().SetCardState(CardBehaviour.CardState.AICard);
+            cardHand[i].transform.eulerAngles = userHandRot * -1;
+        }
+        else
+        {
+            cardHand[i].GetComponent<CardBehaviour>().SetCardState(CardBehaviour.CardState.CardInHand);
+            cardHand[i].transform.eulerAngles = userHandRot;
+            Debug.Log("CardInHANDNumber --> " + cardHand[i].GetComponent<CardBehaviour>().GetUniqueCardIDNumber() + " CardInHANDColor --> " + cardHand[i].GetComponent<CardBehaviour>().GetUniqueCardIDColor());
+        }        
         cardHand[i].GetComponent<CardBehaviour>().SetOriginalCardPos(cardHand[i].transform.position);
-        Debug.Log("CardInHANDNumber --> " + cardHand[i].GetComponent<CardBehaviour>().GetUniqueCardIDNumber() + " CardInHANDColor --> " + cardHand[i].GetComponent<CardBehaviour>().GetUniqueCardIDColor());
     }
 }

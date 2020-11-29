@@ -24,7 +24,8 @@ public class CardBehaviour : MonoBehaviour
     {
         CardInDeck,
         CardInHand,
-        CardInPile
+        CardInPile,
+        AICard
     }
 
     private CardState cardStateReference;
@@ -109,16 +110,19 @@ public class CardBehaviour : MonoBehaviour
 
     private void OnMouseEnter()
     {
-        if (userCardHand != null && userCardHand.GetHandMovement() == false)
+        if (cardStateReference != CardState.AICard)
         {
-            if (cardStateReference == CardState.CardInHand)
+            if (userCardHand != null && userCardHand.GetHandMovement() == false)
             {
-                SwitchColliders();
-                userCardHand.SetCardSelected(true);
-
-                if (this.transform.position == originalCardPos && userCardHand.GetCardHand().Count != 1)
+                if (cardStateReference == CardState.CardInHand)
                 {
-                    this.transform.position += cardOverOffset;
+                    SwitchColliders();
+                    userCardHand.SetCardSelected(true);
+
+                    if (this.transform.position == originalCardPos && userCardHand.GetCardHand().Count != 1)
+                    {
+                        this.transform.position += cardOverOffset;
+                    }
                 }
             }
         }
@@ -126,19 +130,22 @@ public class CardBehaviour : MonoBehaviour
 
     private void OnMouseExit()
     {
-        if (userCardHand.GetHandMovement() == false)
+        if (cardStateReference != CardState.AICard)
         {
-            if (cardStateReference == CardState.CardInHand)
+            if (userCardHand.GetHandMovement() == false)
             {
-                if (Input.GetAxis("Mouse X") != 0 || Input.GetAxis("Mouse Y") != 0)
+                if (cardStateReference == CardState.CardInHand)
                 {
-                    SwitchColliders();
-                    userCardHand.SetCardSelected(false);
-                }
+                    if (Input.GetAxis("Mouse X") != 0 || Input.GetAxis("Mouse Y") != 0)
+                    {
+                        SwitchColliders();
+                        userCardHand.SetCardSelected(false);
+                    }
 
-                if (this.transform.position != originalCardPos && userCardHand.GetCardHand().Count != 1)
-                {
-                    this.transform.position = originalCardPos;
+                    if (this.transform.position != originalCardPos && userCardHand.GetCardHand().Count != 1)
+                    {
+                        this.transform.position = originalCardPos;
+                    }
                 }
             }
         }
@@ -146,27 +153,33 @@ public class CardBehaviour : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (cardStateReference == CardState.CardInHand)
+        if (cardStateReference != CardState.AICard)
         {
-            if (userCardHand.GetHandState() == UserHand.HandState.PlayCard)
+            if (cardStateReference == CardState.CardInHand)
             {
-                if (userCardHand.GetDeck().GetComponent<DeckBehaviour>().GetPileOfCards().GetCardRef().GetComponent<CardBehaviour>().GetUniqueCardIDColor() == this.uniqueCardIDColor || userCardHand.GetDeck().GetComponent<DeckBehaviour>().GetPileOfCards().GetCardRef().GetComponent<CardBehaviour>().GetUniqueCardIDNumber() == this.uniqueCardIDNumber)
+                if (userCardHand.GetHandState() == UserHand.HandState.PlayCard)
                 {
-                    userCardHand.SetCardSelected(false);
-                    if (this.transform.position != originalCardPos)
+                    if (userCardHand.GetDeck().GetComponent<DeckBehaviour>().GetPileOfCards().GetCardRef().GetComponent<CardBehaviour>().GetUniqueCardIDColor() == this.uniqueCardIDColor || userCardHand.GetDeck().GetComponent<DeckBehaviour>().GetPileOfCards().GetCardRef().GetComponent<CardBehaviour>().GetUniqueCardIDNumber() == this.uniqueCardIDNumber)
                     {
-                        this.transform.position = originalCardPos;
-                    }
+                        userCardHand.SetCardSelected(false);
+                        if (this.transform.position != originalCardPos)
+                        {
+                            this.transform.position = originalCardPos;
+                        }
 
-                    PlayCard();
+                        PlayCard();
+                    }
                 }
             }
         }
     }
 
-    private void PlayCard()
+    public void PlayCard()
     {
-        Debug.Log("___________________________________________________________________");
+        if (userCardHand.GetUserTag() != "AI")
+        {
+            Debug.Log("___________________________________________________________________");
+        }
 
         SetCardCheck(true);
 
@@ -194,7 +207,10 @@ public class CardBehaviour : MonoBehaviour
 
         for (int i = 0; i < userCardHandList.Count; i++)
         {
-            Debug.Log("CardInHANDNumber --> " + userCardHandList[i].GetComponent<CardBehaviour>().GetUniqueCardIDNumber() + " CardInHANDColor --> " + userCardHandList[i].GetComponent<CardBehaviour>().GetUniqueCardIDColor());
+            if (userCardHand.GetUserTag() != "AI")
+            {
+                Debug.Log("CardInHANDNumber --> " + userCardHandList[i].GetComponent<CardBehaviour>().GetUniqueCardIDNumber() + " CardInHANDColor --> " + userCardHandList[i].GetComponent<CardBehaviour>().GetUniqueCardIDColor());
+            }
         }
 
         userCardHand.UpdateCardHand(userCardHandList);
@@ -204,7 +220,10 @@ public class CardBehaviour : MonoBehaviour
             userCardHand.GetDeck().GetComponent<DeckBehaviour>().GetGMRef().checkInteractiveButton(true);
         }
 
-        StartCoroutine(userCardHand.GetDeck().GetComponent<DeckBehaviour>().GetGMRef().AITurn());
+        if (userCardHand.GetUserTag() != "AI" && userCardHandList.Count != 0)
+        {
+            StartCoroutine(userCardHand.GetDeck().GetComponent<DeckBehaviour>().GetGMRef().AITurn());
+        }
 
         //userCardHand.UpdateCardHand(userCardHandList);
 
