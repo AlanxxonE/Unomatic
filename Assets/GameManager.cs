@@ -78,7 +78,11 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("STARTOFTURN!");
 
-        if(handOfUser.GetCardHand().Count == 1)
+        if(handOfUser.GetCardHand().Count == 2)
+        {
+            checkInteractiveButton(true);
+        }
+        else
         {
             checkInteractiveButton(false);
         }
@@ -104,11 +108,11 @@ public class GameManager : MonoBehaviour
 
     public IEnumerator AITurn()
     {
+        deckRef.GetComponent<DeckBehaviour>().GetUserHand().SetHandState(UserHand.HandState.WaitForTurn);
+
         yield return new WaitForSeconds(1);
 
         EndOfTurn(deckRef.GetComponent<DeckBehaviour>().GetUserHand());
-
-        deckRef.GetComponent<DeckBehaviour>().GetUserHand().SetHandState(UserHand.HandState.WaitForTurn);
 
         yield return new WaitForSeconds(1);
 
