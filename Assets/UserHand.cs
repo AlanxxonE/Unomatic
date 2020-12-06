@@ -198,6 +198,7 @@ public class UserHand : MonoBehaviour
         if (cardHand[i].transform.root.gameObject.tag == "AI")
         {
             cardHand[i].GetComponent<CardBehaviour>().SetCardState(CardBehaviour.CardState.AICard);
+            cardHand[i].GetComponent<Renderer>().material.color = Color.white;
             cardHand[i].transform.eulerAngles = userHandRot * -1;
         }
         else

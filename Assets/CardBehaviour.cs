@@ -184,6 +184,24 @@ public class CardBehaviour : MonoBehaviour
         {
             Debug.Log("___________________________________________________________________");
         }
+        else
+        {
+            switch (this.uniqueCardIDColor)
+            {
+                case 0:
+                    this.GetComponent<Renderer>().material.color = Color.yellow;
+                    break;
+                case 1:
+                    this.GetComponent<Renderer>().material.color = Color.green;
+                    break;
+                case 2:
+                    this.GetComponent<Renderer>().material.color = Color.blue;
+                    break;
+                case 3:
+                    this.GetComponent<Renderer>().material.color = Color.red;
+                    break;
+            }
+        }
 
         SetCardCheck(true);
 
