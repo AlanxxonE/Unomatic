@@ -90,12 +90,16 @@ public class CardBehaviour : MonoBehaviour
         return playCardCheck;
     }
 
+    public UserHand GetUserHand()
+    {
+        return userCardHand;
+    }
+
     public UserHand SetUserHand(UserHand userHand)
     {
         userCardHand = userHand;
         return userCardHand;
     }
-
     // Start is called before the first frame update
     void Start()
     {
@@ -184,6 +188,10 @@ public class CardBehaviour : MonoBehaviour
         SetCardCheck(true);
 
         SetCardState(CardState.CardInPile);
+
+        GameObject clonePlayedCard = Instantiate(this.gameObject);
+        clonePlayedCard.transform.position = this.transform.position;
+        clonePlayedCard.GetComponent<PlayingBehaviour>().enabled = true;
 
         List<GameObject> userCardHandList = userCardHand.GetCardHand();
 
