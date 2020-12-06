@@ -40,9 +40,11 @@ public class DeckBehaviour : MonoBehaviour
         return deckOfCards;
     }
 
-    public GameObject DrawCard()
+    public GameObject DrawCard(Transform drawPosition)
     {
         GameObject cardToDraw = deckOfCards[deckOfCards.Count - 1];
+
+        DrawCardEffect(cardToDraw,drawPosition);
 
         deckOfCards.RemoveAt(deckOfCards.Count - 1);
 
@@ -87,7 +89,7 @@ public class DeckBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     private void OnMouseDown()
@@ -209,5 +211,13 @@ public class DeckBehaviour : MonoBehaviour
 
         ableToDraw = checkDraw;
         return ableToDraw;
+    }
+
+    private void DrawCardEffect(GameObject card, Transform position)
+    {
+        GameObject drawCardClone = Instantiate(card);
+        drawCardClone.transform.position = this.transform.position;
+        drawCardClone.GetComponent<DrawingBehaviour>().enabled = true;
+        drawCardClone.GetComponent<DrawingBehaviour>().SetTarget(position);
     }
 }

@@ -22,6 +22,10 @@ TagManager:
   - UnoButton
   - GameManager
   - AI
+  - StartButton
+  - BackButton
+  - DifficultyButton
+  - ExitButton
   layers:
   - Default
   - TransparentFX

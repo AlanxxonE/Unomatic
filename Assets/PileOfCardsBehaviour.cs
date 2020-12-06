@@ -58,7 +58,7 @@ public class PileOfCardsBehaviour : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        AddCardToPile(deckRef.GetComponent<DeckBehaviour>().DrawCard());
+        AddCardToPile(deckRef.GetComponent<DeckBehaviour>().DrawCard(this.transform));
     }
 
     // Update is called once per frame

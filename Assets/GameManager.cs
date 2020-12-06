@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -40,7 +41,10 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (deckRef.GetComponent<DeckBehaviour>().GetUserHand().GetCardHand().Count == 0 && unoCall == true)
+        {
+            SceneManager.LoadScene(0, LoadSceneMode.Single);
+        }
     }
 
     public void checkInteractiveButton(bool checkButton)
@@ -99,10 +103,6 @@ public class GameManager : MonoBehaviour
                 handOfUser.DrawCardInHand(handOfUser.GetCardHand().Count);
                 handOfUser.DrawCardInHand(handOfUser.GetCardHand().Count);
             }
-        }
-        else if(handOfUser.GetCardHand().Count == 0)
-        {
-            Debug.Log("WONTHEMATCH!");
         }
     }
 

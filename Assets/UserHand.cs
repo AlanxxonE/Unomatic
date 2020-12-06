@@ -191,7 +191,7 @@ public class UserHand : MonoBehaviour
 
     public void DrawCardInHand(int i)
     {
-        cardHand.Add(deckRef.GetComponent<DeckBehaviour>().DrawCard());
+        cardHand.Add(deckRef.GetComponent<DeckBehaviour>().DrawCard(this.transform));
         cardHand[i].GetComponent<CardBehaviour>().SetUserHand(this.gameObject.GetComponent<UserHand>());
         cardHand[i].transform.SetParent(this.transform);
         cardHand[i].transform.position = this.transform.position + (i * handOffSet);
