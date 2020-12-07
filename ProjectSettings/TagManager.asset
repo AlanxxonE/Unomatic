@@ -26,6 +26,11 @@ TagManager:
   - BackButton
   - DifficultyButton
   - ExitButton
+  - DealingText
+  - AIText
+  - UserText
+  - UnosText
+  - TextEffect
   layers:
   - Default
   - TransparentFX

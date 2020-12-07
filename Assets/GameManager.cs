@@ -12,6 +12,16 @@ public class GameManager : MonoBehaviour
 
     private bool unoCall = false;
 
+    private GameObject DealingTextRef;
+
+    private GameObject AITextRef;
+
+    private GameObject UserTextRef;
+
+    private GameObject UnosCallRef;
+
+    private ParticleSystem textEffectRef;
+
     public bool GetUnoCall()
     {
         return unoCall;
@@ -34,6 +44,22 @@ public class GameManager : MonoBehaviour
         deckRef = GameObject.FindGameObjectWithTag("Deck");
 
         buttonRef = GameObject.FindGameObjectWithTag("UnoButton");
+
+        DealingTextRef = GameObject.FindGameObjectWithTag("DealingText");
+
+        AITextRef = GameObject.FindGameObjectWithTag("AIText");
+
+        UserTextRef = GameObject.FindGameObjectWithTag("UserText");
+
+        UnosCallRef = GameObject.FindGameObjectWithTag("UnosText");
+
+        textEffectRef = GameObject.FindGameObjectWithTag("TextEffect").GetComponent<ParticleSystem>();
+
+        AITextRef.SetActive(false);
+
+        UserTextRef.SetActive(false);
+
+        UnosCallRef.SetActive(false);
 
         checkInteractiveButton(false);
     }
@@ -75,7 +101,12 @@ public class GameManager : MonoBehaviour
     public void clickUnoButton()
     {
         buttonRef.GetComponent<Image>().color = Color.green;
-        unoCall = true;
+        if (unoCall == false)
+        {
+            StartCoroutine(UnosTextRoutine());
+
+            unoCall = true;
+        }
     }
 
     public void StartOfTurn(UserHand handOfUser)
@@ -108,6 +139,8 @@ public class GameManager : MonoBehaviour
 
     public IEnumerator AITurn()
     {
+        StartCoroutine(AITextRoutine());
+
         deckRef.GetComponent<DeckBehaviour>().GetUserHand().SetHandState(UserHand.HandState.WaitForTurn);
 
         yield return new WaitForSeconds(1);
@@ -115,6 +148,8 @@ public class GameManager : MonoBehaviour
         EndOfTurn(deckRef.GetComponent<DeckBehaviour>().GetUserHand());
 
         yield return new WaitForSeconds(1);
+
+        StartCoroutine(UserTextRoutine());
 
         deckRef.GetComponent<DeckBehaviour>().GetAIHand().SetHandState(UserHand.HandState.PlayCard);
 
@@ -126,5 +161,38 @@ public class GameManager : MonoBehaviour
 
             deckRef.GetComponent<DeckBehaviour>().GetUserHand().SetHandState(UserHand.HandState.PlayCard);
         }
+    }
+
+    private IEnumerator AITextRoutine()
+    {
+        AITextRef.SetActive(true);
+
+        textEffectRef.Play();
+
+        yield return new WaitForSeconds(2);
+
+        AITextRef.SetActive(false);
+    }
+
+    private IEnumerator UserTextRoutine()
+    {
+        UserTextRef.SetActive(true);
+
+        textEffectRef.Play();
+
+        yield return new WaitForSeconds(2);
+
+        UserTextRef.SetActive(false);
+    }
+
+    private IEnumerator UnosTextRoutine()
+    {
+        UnosCallRef.SetActive(true);
+
+        textEffectRef.Play();
+
+        yield return new WaitForSeconds(2);
+
+        UnosCallRef.SetActive(false);
     }
 }

@@ -79,11 +79,11 @@ public class DeckBehaviour : MonoBehaviour
 
         GenerateDeck(deckOfCards);
 
+        pileOfCardsRef.SetDeck(this.gameObject);
+
         userHandRef.SetDeck(this.gameObject);
 
         AIHandRef.SetDeck(this.gameObject);
-
-        pileOfCardsRef.SetDeck(this.gameObject);
     }
 
     // Update is called once per frame
