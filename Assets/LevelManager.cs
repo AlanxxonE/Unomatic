@@ -40,17 +40,17 @@ public class LevelManager : MonoBehaviour
 
         if (GameObject.FindGameObjectWithTag("EasyButton") != null)
         {
-            difficultyRef = GameObject.FindGameObjectWithTag("EasyButton").GetComponent<Button>();
+            easyDifRef = GameObject.FindGameObjectWithTag("EasyButton").GetComponent<Button>();
         }
 
         if (GameObject.FindGameObjectWithTag("MediumButton") != null)
         {
-            difficultyRef = GameObject.FindGameObjectWithTag("MediumButton").GetComponent<Button>();
+            mediumDifRef = GameObject.FindGameObjectWithTag("MediumButton").GetComponent<Button>();
         }
 
         if (GameObject.FindGameObjectWithTag("HardButton") != null)
         {
-            difficultyRef = GameObject.FindGameObjectWithTag("HardButton").GetComponent<Button>();
+            hardDifRef = GameObject.FindGameObjectWithTag("HardButton").GetComponent<Button>();
         }
 
         if (GameObject.FindGameObjectWithTag("ExitButton") != null)
@@ -97,7 +97,7 @@ public class LevelManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(AIBehaviour.difficultyLevel);
+        
     }
 
     private void StartButtonMethod()
