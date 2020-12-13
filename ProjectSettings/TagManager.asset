@@ -31,6 +31,9 @@ TagManager:
   - UserText
   - UnosText
   - TextEffect
+  - EasyButton
+  - MediumButton
+  - HardButton
   layers:
   - Default
   - TransparentFX

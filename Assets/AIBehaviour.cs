@@ -17,6 +17,15 @@ public class AIBehaviour : MonoBehaviour
         return decisionTime;
     }
 
+    public enum DifficultyLevels
+    {
+        Easy,
+        Medium,
+        Hard
+    }
+
+    public static DifficultyLevels difficultyLevel;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -31,34 +40,45 @@ public class AIBehaviour : MonoBehaviour
 
     public void CheckAIHand()
     {
-        if (GetComponentInChildren<UserHand>().GetHandState() == UserHand.HandState.PlayCard)
+        if (difficultyLevel == DifficultyLevels.Easy)
         {
-            for (int i = 0; i < GetComponentInChildren<UserHand>().GetCardHand().Count; i++)
+            if (GetComponentInChildren<UserHand>().GetHandState() == UserHand.HandState.PlayCard)
             {
-                if (GetComponentInChildren<UserHand>().GetCardHand()[i].GetComponent<CardBehaviour>().GetUniqueCardIDNumber() == GetComponentInChildren<UserHand>().GetDeck().GetComponent<DeckBehaviour>().GetPileOfCards().GetCardRef().GetComponent<CardBehaviour>().GetUniqueCardIDNumber()
-                    || GetComponentInChildren<UserHand>().GetCardHand()[i].GetComponent<CardBehaviour>().GetUniqueCardIDColor() == GetComponentInChildren<UserHand>().GetDeck().GetComponent<DeckBehaviour>().GetPileOfCards().GetCardRef().GetComponent<CardBehaviour>().GetUniqueCardIDColor())
+                for (int i = 0; i < GetComponentInChildren<UserHand>().GetCardHand().Count; i++)
                 {
-                    GetComponentInChildren<UserHand>().GetCardHand()[i].GetComponent<CardBehaviour>().PlayCard();
-
-                    GetComponentInChildren<UserHand>().SetHandState(UserHand.HandState.WaitForTurn);
-
-                    break;
-                }
-                else if(i == GetComponentInChildren<UserHand>().GetCardHand().Count - 1)
-                {
-                    GetComponentInChildren<UserHand>().DrawCardInHand(GetComponentInChildren<UserHand>().GetCardHand().Count);
-
-                    if(GetComponentInChildren<UserHand>().GetCardHand()[GetComponentInChildren<UserHand>().GetCardHand().Count - 1].GetComponent<CardBehaviour>().GetUniqueCardIDNumber() == GetComponentInChildren<UserHand>().GetDeck().GetComponent<DeckBehaviour>().GetPileOfCards().GetCardRef().GetComponent<CardBehaviour>().GetUniqueCardIDNumber()
-                    || GetComponentInChildren<UserHand>().GetCardHand()[GetComponentInChildren<UserHand>().GetCardHand().Count - 1].GetComponent<CardBehaviour>().GetUniqueCardIDColor() == GetComponentInChildren<UserHand>().GetDeck().GetComponent<DeckBehaviour>().GetPileOfCards().GetCardRef().GetComponent<CardBehaviour>().GetUniqueCardIDColor())
+                    if (GetComponentInChildren<UserHand>().GetCardHand()[i].GetComponent<CardBehaviour>().GetUniqueCardIDNumber() == GetComponentInChildren<UserHand>().GetDeck().GetComponent<DeckBehaviour>().GetPileOfCards().GetCardRef().GetComponent<CardBehaviour>().GetUniqueCardIDNumber()
+                        || GetComponentInChildren<UserHand>().GetCardHand()[i].GetComponent<CardBehaviour>().GetUniqueCardIDColor() == GetComponentInChildren<UserHand>().GetDeck().GetComponent<DeckBehaviour>().GetPileOfCards().GetCardRef().GetComponent<CardBehaviour>().GetUniqueCardIDColor())
                     {
-                        GetComponentInChildren<UserHand>().GetCardHand()[GetComponentInChildren<UserHand>().GetCardHand().Count - 1].GetComponent<CardBehaviour>().PlayCard();
+                        GetComponentInChildren<UserHand>().GetCardHand()[i].GetComponent<CardBehaviour>().PlayCard();
+
+                        GetComponentInChildren<UserHand>().SetHandState(UserHand.HandState.WaitForTurn);
+
+                        break;
                     }
+                    else if (i == GetComponentInChildren<UserHand>().GetCardHand().Count - 1)
+                    {
+                        GetComponentInChildren<UserHand>().DrawCardInHand(GetComponentInChildren<UserHand>().GetCardHand().Count);
 
-                    GetComponentInChildren<UserHand>().SetHandState(UserHand.HandState.WaitForTurn);
+                        if (GetComponentInChildren<UserHand>().GetCardHand()[GetComponentInChildren<UserHand>().GetCardHand().Count - 1].GetComponent<CardBehaviour>().GetUniqueCardIDNumber() == GetComponentInChildren<UserHand>().GetDeck().GetComponent<DeckBehaviour>().GetPileOfCards().GetCardRef().GetComponent<CardBehaviour>().GetUniqueCardIDNumber()
+                        || GetComponentInChildren<UserHand>().GetCardHand()[GetComponentInChildren<UserHand>().GetCardHand().Count - 1].GetComponent<CardBehaviour>().GetUniqueCardIDColor() == GetComponentInChildren<UserHand>().GetDeck().GetComponent<DeckBehaviour>().GetPileOfCards().GetCardRef().GetComponent<CardBehaviour>().GetUniqueCardIDColor())
+                        {
+                            GetComponentInChildren<UserHand>().GetCardHand()[GetComponentInChildren<UserHand>().GetCardHand().Count - 1].GetComponent<CardBehaviour>().PlayCard();
+                        }
 
-                    break;
+                        GetComponentInChildren<UserHand>().SetHandState(UserHand.HandState.WaitForTurn);
+
+                        break;
+                    }
                 }
             }
+        }
+        else if(difficultyLevel == DifficultyLevels.Medium)
+        {
+            Debug.Log("MEDIUMMEDIUM!");
+        }
+        else if(difficultyLevel == DifficultyLevels.Hard)
+        {
+            Debug.Log("HARDHARDHARD!");
         }
     }
 }
