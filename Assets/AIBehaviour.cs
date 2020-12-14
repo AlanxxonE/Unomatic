@@ -26,10 +26,23 @@ public class AIBehaviour : MonoBehaviour
 
     public static DifficultyLevels difficultyLevel;
 
+
+    private List<GameObject> yellowCardList = new List<GameObject>();
+
+    private List<GameObject> greenCardList = new List<GameObject>();
+
+    private List<GameObject> blueCardList = new List<GameObject>();
+
+    private List<GameObject> redCardList = new List<GameObject>();
+
+    private List<List<GameObject>> orderOfColors = new List<List<GameObject>>();
+
+    private int listDimension = -1;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        difficultyLevel = DifficultyLevels.Hard;
     }
 
     // Update is called once per frame
@@ -78,7 +91,74 @@ public class AIBehaviour : MonoBehaviour
         }
         else if(difficultyLevel == DifficultyLevels.Hard)
         {
-            Debug.Log("HARDHARDHARD!");
+            if (GetComponentInChildren<UserHand>().GetHandState() == UserHand.HandState.PlayCard)
+            {
+                for (int i = 0; i < GetComponentInChildren<UserHand>().GetCardHand().Count; i++)
+                {
+                    if (GetComponentInChildren<UserHand>().GetCardHand()[i].GetComponent<CardBehaviour>().GetUniqueCardIDColor() == 0)
+                    {
+                        yellowCardList.Add(GetComponentInChildren<UserHand>().GetCardHand()[i]);
+                    }
+                    else if (GetComponentInChildren<UserHand>().GetCardHand()[i].GetComponent<CardBehaviour>().GetUniqueCardIDColor() == 1)
+                    {
+                        greenCardList.Add(GetComponentInChildren<UserHand>().GetCardHand()[i]);
+                    }
+                    else if (GetComponentInChildren<UserHand>().GetCardHand()[i].GetComponent<CardBehaviour>().GetUniqueCardIDColor() == 2)
+                    {
+                        blueCardList.Add(GetComponentInChildren<UserHand>().GetCardHand()[i]);
+                    }
+                    else if (GetComponentInChildren<UserHand>().GetCardHand()[i].GetComponent<CardBehaviour>().GetUniqueCardIDColor() == 3)
+                    {
+                        redCardList.Add(GetComponentInChildren<UserHand>().GetCardHand()[i]);
+                    }
+                }
+
+                for (int i = 0; i < 4; i++)
+                {
+                    if (listDimension < yellowCardList.Count)
+                    {
+                        listDimension = yellowCardList.Count;
+                        if (!orderOfColors.Contains(yellowCardList))
+                        {
+                            orderOfColors.Add(yellowCardList);
+                        }
+                    }
+                    
+                    if (listDimension < greenCardList.Count)
+                    {
+                        listDimension = greenCardList.Count;
+                        if (!orderOfColors.Contains(greenCardList))
+                        {
+                            orderOfColors.Add(greenCardList);
+                        }
+                    }
+                    
+                    if (listDimension < blueCardList.Count)
+                    {
+                        listDimension = blueCardList.Count;
+                        if (!orderOfColors.Contains(blueCardList))
+                        {
+                            orderOfColors.Add(blueCardList);
+                        }
+                    }
+                    
+                    if (listDimension < redCardList.Count)
+                    {
+                        listDimension = redCardList.Count;
+                        if (!orderOfColors.Contains(redCardList))
+                        {
+                            orderOfColors.Add(redCardList);
+                        }
+                    }
+                }
+
+                Debug.Log(yellowCardList.Count);
+                Debug.Log(greenCardList.Count);
+                Debug.Log(blueCardList.Count);
+                Debug.Log(redCardList.Count);
+
+                Debug.Log(orderOfColors);
+            }
         }
     }
 }
