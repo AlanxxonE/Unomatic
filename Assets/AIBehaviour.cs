@@ -37,12 +37,17 @@ public class AIBehaviour : MonoBehaviour
 
     private List<List<GameObject>> orderOfColors = new List<List<GameObject>>();
 
-    private int listDimension = -1;
+    private List<List<GameObject>> originalOrderList = new List<List<GameObject>>();
 
     // Start is called before the first frame update
     void Start()
     {
         difficultyLevel = DifficultyLevels.Hard;
+
+        orderOfColors.Add(yellowCardList);
+        orderOfColors.Add(greenCardList);
+        orderOfColors.Add(blueCardList);
+        orderOfColors.Add(redCardList);
     }
 
     // Update is called once per frame
@@ -113,51 +118,40 @@ public class AIBehaviour : MonoBehaviour
                     }
                 }
 
-                for (int i = 0; i < 4; i++)
+                for (int i = 0; i < orderOfColors.Count; i++)
                 {
-                    if (listDimension < yellowCardList.Count)
-                    {
-                        listDimension = yellowCardList.Count;
-                        if (!orderOfColors.Contains(yellowCardList))
-                        {
-                            orderOfColors.Add(yellowCardList);
-                        }
-                    }
-                    
-                    if (listDimension < greenCardList.Count)
-                    {
-                        listDimension = greenCardList.Count;
-                        if (!orderOfColors.Contains(greenCardList))
-                        {
-                            orderOfColors.Add(greenCardList);
-                        }
-                    }
-                    
-                    if (listDimension < blueCardList.Count)
-                    {
-                        listDimension = blueCardList.Count;
-                        if (!orderOfColors.Contains(blueCardList))
-                        {
-                            orderOfColors.Add(blueCardList);
-                        }
-                    }
-                    
-                    if (listDimension < redCardList.Count)
-                    {
-                        listDimension = redCardList.Count;
-                        if (!orderOfColors.Contains(redCardList))
-                        {
-                            orderOfColors.Add(redCardList);
-                        }
-                    }
+                    originalOrderList.Add(orderOfColors[i]);
                 }
+
+                Debug.Log("UNSORTED ----------------------");
 
                 Debug.Log(yellowCardList.Count);
                 Debug.Log(greenCardList.Count);
                 Debug.Log(blueCardList.Count);
                 Debug.Log(redCardList.Count);
 
-                Debug.Log(orderOfColors);
+                Debug.Log("SORTED !!!!!!!!!!!!!!!!!!!!!!!!!!!");
+
+                SortOrderList();
+
+                for (int i = 0; i < orderOfColors.Count; i++)
+                {
+                    Debug.Log(orderOfColors[i].Count);
+                }
+            }
+        }
+    }
+
+    private void SortOrderList()
+    {
+        for (int numberOfElements = 1; numberOfElements < orderOfColors.Count; numberOfElements++)
+        {
+            if(orderOfColors[numberOfElements].Count > orderOfColors[numberOfElements - 1].Count)
+            {
+                List<GameObject> tempList = orderOfColors[numberOfElements - 1];
+                orderOfColors[numberOfElements - 1] = orderOfColors[numberOfElements];
+                orderOfColors[numberOfElements] = tempList;
+                numberOfElements = 0;
             }
         }
     }
