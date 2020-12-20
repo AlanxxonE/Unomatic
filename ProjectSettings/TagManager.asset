@@ -34,6 +34,7 @@ TagManager:
   - EasyButton
   - MediumButton
   - HardButton
+  - AIStatusText
   layers:
   - Default
   - TransparentFX

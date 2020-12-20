@@ -108,7 +108,7 @@ public class GameManager : MonoBehaviour
 
     public void StartOfTurn(UserHand handOfUser)
     {
-        Debug.Log("STARTOFTURN!");
+        //Debug.Log("STARTOFTURN!");
 
         if(handOfUser.transform.root.gameObject.tag == "AI" && handOfUser.GetCardHand().Count == 0)
         {
@@ -127,7 +127,7 @@ public class GameManager : MonoBehaviour
 
     public void EndOfTurn(UserHand handOfUser)
     {
-        Debug.Log("ENDOFTURN!");
+        //Debug.Log("ENDOFTURN!");
 
         if (handOfUser.GetCardHand().Count == 1)
         {

@@ -20,6 +20,8 @@ public class LevelManager : MonoBehaviour
 
     private Button exitRef;
 
+    private Text AIStatusTextRef;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -58,7 +60,17 @@ public class LevelManager : MonoBehaviour
             exitRef = GameObject.FindGameObjectWithTag("ExitButton").GetComponent<Button>();
         }
 
-        if(startRef != null)
+        if (GameObject.FindGameObjectWithTag("AIStatusText") != null)
+        {
+            AIStatusTextRef = GameObject.FindGameObjectWithTag("AIStatusText").GetComponent<Text>();
+        }
+
+        if (AIStatusTextRef != null)
+        {
+            AIStatusTextRef.text = "AI: " + AIBehaviour.difficultyLevel.ToString();
+        }
+
+        if (startRef != null)
         {
             startRef.onClick.AddListener(StartButtonMethod);
         }
@@ -117,24 +129,27 @@ public class LevelManager : MonoBehaviour
 
     private void EasyButtonMethod()
     {
-        if (AIBehaviour.difficultyLevel != AIBehaviour.DifficultyLevels.Easy)
+        if (AIBehaviour.difficultyLevel != AIBehaviour.DifficultyLevels.EASY)
         {
-            AIBehaviour.difficultyLevel = AIBehaviour.DifficultyLevels.Easy;
+            AIBehaviour.difficultyLevel = AIBehaviour.DifficultyLevels.EASY;
+            AIStatusTextRef.text = "AI: " + AIBehaviour.difficultyLevel.ToString();
         }
     }
 
     private void MediumButtonMethod()
     {
-        if (AIBehaviour.difficultyLevel != AIBehaviour.DifficultyLevels.Medium)
+        if (AIBehaviour.difficultyLevel != AIBehaviour.DifficultyLevels.MEDIUM)
         {
-            AIBehaviour.difficultyLevel = AIBehaviour.DifficultyLevels.Medium;
+            AIBehaviour.difficultyLevel = AIBehaviour.DifficultyLevels.MEDIUM;
+            AIStatusTextRef.text = "AI: " + AIBehaviour.difficultyLevel.ToString();
         }
     }
     private void HardButtonMethod()
     {
-        if (AIBehaviour.difficultyLevel != AIBehaviour.DifficultyLevels.Hard)
+        if (AIBehaviour.difficultyLevel != AIBehaviour.DifficultyLevels.HARD)
         {
-            AIBehaviour.difficultyLevel = AIBehaviour.DifficultyLevels.Hard;
+            AIBehaviour.difficultyLevel = AIBehaviour.DifficultyLevels.HARD;
+            AIStatusTextRef.text = "AI: " + AIBehaviour.difficultyLevel.ToString();
         }
     }
 

@@ -182,7 +182,7 @@ public class CardBehaviour : MonoBehaviour
     {
         if (userCardHand.GetUserTag() != "AI")
         {
-            Debug.Log("___________________________________________________________________");
+            //Debug.Log("___________________________________________________________________");
         }
         else
         {
@@ -235,7 +235,7 @@ public class CardBehaviour : MonoBehaviour
         {
             if (userCardHand.GetUserTag() != "AI")
             {
-                Debug.Log("CardInHANDNumber --> " + userCardHandList[i].GetComponent<CardBehaviour>().GetUniqueCardIDNumber() + " CardInHANDColor --> " + userCardHandList[i].GetComponent<CardBehaviour>().GetUniqueCardIDColor());
+                //Debug.Log("CardInHANDNumber --> " + userCardHandList[i].GetComponent<CardBehaviour>().GetUniqueCardIDNumber() + " CardInHANDColor --> " + userCardHandList[i].GetComponent<CardBehaviour>().GetUniqueCardIDColor());
             }
         }
 

@@ -19,9 +19,9 @@ public class AIBehaviour : MonoBehaviour
 
     public enum DifficultyLevels
     {
-        Easy,
-        Medium,
-        Hard
+        EASY,
+        MEDIUM,
+        HARD
     }
 
     public static DifficultyLevels difficultyLevel;
@@ -40,8 +40,6 @@ public class AIBehaviour : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        difficultyLevel = DifficultyLevels.Hard;
-
         orderOfColors.Add(yellowCardList);
         orderOfColors.Add(greenCardList);
         orderOfColors.Add(blueCardList);
@@ -56,7 +54,7 @@ public class AIBehaviour : MonoBehaviour
 
     public void CheckAIHand()
     {
-        if (difficultyLevel == DifficultyLevels.Easy)
+        if (difficultyLevel == DifficultyLevels.EASY)
         {
             if (GetComponentInChildren<UserHand>().GetHandState() == UserHand.HandState.PlayCard)
             {
@@ -67,9 +65,7 @@ public class AIBehaviour : MonoBehaviour
                     {
                         GetComponentInChildren<UserHand>().GetCardHand()[i].GetComponent<CardBehaviour>().PlayCard();
 
-                        GetComponentInChildren<UserHand>().SetHandState(UserHand.HandState.WaitForTurn);
-
-                        break;
+                        goto NextTurn;
                     }
                     else if (i == GetComponentInChildren<UserHand>().GetCardHand().Count - 1)
                     {
@@ -81,18 +77,95 @@ public class AIBehaviour : MonoBehaviour
                             GetComponentInChildren<UserHand>().GetCardHand()[GetComponentInChildren<UserHand>().GetCardHand().Count - 1].GetComponent<CardBehaviour>().PlayCard();
                         }
 
-                        GetComponentInChildren<UserHand>().SetHandState(UserHand.HandState.WaitForTurn);
-
-                        break;
+                        goto NextTurn;
                     }
                 }
+
+            NextTurn:
+
+                GetComponentInChildren<UserHand>().SetHandState(UserHand.HandState.WaitForTurn);
             }
         }
-        else if(difficultyLevel == DifficultyLevels.Medium)
+        else if(difficultyLevel == DifficultyLevels.MEDIUM)
         {
-            Debug.Log("MEDIUMMEDIUM!");
+            if (GetComponentInChildren<UserHand>().GetHandState() == UserHand.HandState.PlayCard)
+            {
+                for (int i = 0; i < GetComponentInChildren<UserHand>().GetCardHand().Count; i++)
+                {
+                    if (GetComponentInChildren<UserHand>().GetCardHand()[i].GetComponent<CardBehaviour>().GetUniqueCardIDColor() == 0)
+                    {
+                        yellowCardList.Add(GetComponentInChildren<UserHand>().GetCardHand()[i]);
+                    }
+                    else if (GetComponentInChildren<UserHand>().GetCardHand()[i].GetComponent<CardBehaviour>().GetUniqueCardIDColor() == 1)
+                    {
+                        greenCardList.Add(GetComponentInChildren<UserHand>().GetCardHand()[i]);
+                    }
+                    else if (GetComponentInChildren<UserHand>().GetCardHand()[i].GetComponent<CardBehaviour>().GetUniqueCardIDColor() == 2)
+                    {
+                        blueCardList.Add(GetComponentInChildren<UserHand>().GetCardHand()[i]);
+                    }
+                    else if (GetComponentInChildren<UserHand>().GetCardHand()[i].GetComponent<CardBehaviour>().GetUniqueCardIDColor() == 3)
+                    {
+                        redCardList.Add(GetComponentInChildren<UserHand>().GetCardHand()[i]);
+                    }
+                }
+
+                SortOrderList();
+
+                for (int j = 0; j < orderOfColors[0].Count; j++)
+                {
+                    if (orderOfColors[0][j].GetComponent<CardBehaviour>().GetUniqueCardIDNumber() == GetComponentInChildren<UserHand>().GetDeck().GetComponent<DeckBehaviour>().GetPileOfCards().GetCardRef().GetComponent<CardBehaviour>().GetUniqueCardIDNumber())
+                    {
+                        orderOfColors[0][j].GetComponent<CardBehaviour>().PlayCard();
+
+                        goto NextTurn;
+                    }
+
+                    if (j == orderOfColors[0].Count - 1)
+                    {
+                        if (orderOfColors[0][j].GetComponent<CardBehaviour>().GetUniqueCardIDColor() == GetComponentInChildren<UserHand>().GetDeck().GetComponent<DeckBehaviour>().GetPileOfCards().GetCardRef().GetComponent<CardBehaviour>().GetUniqueCardIDColor())
+                        {
+                            orderOfColors[0][j].GetComponent<CardBehaviour>().PlayCard();
+
+                            goto NextTurn;
+                        }
+                    }
+                }
+
+                for (int i = 0; i < GetComponentInChildren<UserHand>().GetCardHand().Count; i++)
+                {
+                    if (GetComponentInChildren<UserHand>().GetCardHand()[i].GetComponent<CardBehaviour>().GetUniqueCardIDNumber() == GetComponentInChildren<UserHand>().GetDeck().GetComponent<DeckBehaviour>().GetPileOfCards().GetCardRef().GetComponent<CardBehaviour>().GetUniqueCardIDNumber()
+                        || GetComponentInChildren<UserHand>().GetCardHand()[i].GetComponent<CardBehaviour>().GetUniqueCardIDColor() == GetComponentInChildren<UserHand>().GetDeck().GetComponent<DeckBehaviour>().GetPileOfCards().GetCardRef().GetComponent<CardBehaviour>().GetUniqueCardIDColor())
+                    {
+                        GetComponentInChildren<UserHand>().GetCardHand()[i].GetComponent<CardBehaviour>().PlayCard();
+
+                        goto NextTurn;
+                    }
+                    else if (i == GetComponentInChildren<UserHand>().GetCardHand().Count - 1)
+                    {
+                        GetComponentInChildren<UserHand>().DrawCardInHand(GetComponentInChildren<UserHand>().GetCardHand().Count);
+
+                        if (GetComponentInChildren<UserHand>().GetCardHand()[GetComponentInChildren<UserHand>().GetCardHand().Count - 1].GetComponent<CardBehaviour>().GetUniqueCardIDNumber() == GetComponentInChildren<UserHand>().GetDeck().GetComponent<DeckBehaviour>().GetPileOfCards().GetCardRef().GetComponent<CardBehaviour>().GetUniqueCardIDNumber()
+                        || GetComponentInChildren<UserHand>().GetCardHand()[GetComponentInChildren<UserHand>().GetCardHand().Count - 1].GetComponent<CardBehaviour>().GetUniqueCardIDColor() == GetComponentInChildren<UserHand>().GetDeck().GetComponent<DeckBehaviour>().GetPileOfCards().GetCardRef().GetComponent<CardBehaviour>().GetUniqueCardIDColor())
+                        {
+                            GetComponentInChildren<UserHand>().GetCardHand()[GetComponentInChildren<UserHand>().GetCardHand().Count - 1].GetComponent<CardBehaviour>().PlayCard();
+                        }
+
+                        goto NextTurn;
+                    }
+                }
+
+            NextTurn:
+
+                for (int i = 0; i < orderOfColors.Count; i++)
+                {
+                    orderOfColors[i].Clear();
+                }
+
+                GetComponentInChildren<UserHand>().SetHandState(UserHand.HandState.WaitForTurn);
+            }
         }
-        else if(difficultyLevel == DifficultyLevels.Hard)
+        else if(difficultyLevel == DifficultyLevels.HARD)
         {
             if (GetComponentInChildren<UserHand>().GetHandState() == UserHand.HandState.PlayCard)
             {
@@ -147,6 +220,8 @@ public class AIBehaviour : MonoBehaviour
                 || GetComponentInChildren<UserHand>().GetCardHand()[GetComponentInChildren<UserHand>().GetCardHand().Count - 1].GetComponent<CardBehaviour>().GetUniqueCardIDColor() == GetComponentInChildren<UserHand>().GetDeck().GetComponent<DeckBehaviour>().GetPileOfCards().GetCardRef().GetComponent<CardBehaviour>().GetUniqueCardIDColor())
                 {
                     GetComponentInChildren<UserHand>().GetCardHand()[GetComponentInChildren<UserHand>().GetCardHand().Count - 1].GetComponent<CardBehaviour>().PlayCard();
+
+                    goto NextTurn;
                 }
 
             NextTurn:
@@ -155,6 +230,8 @@ public class AIBehaviour : MonoBehaviour
                 {
                     orderOfColors[i].Clear();
                 }
+
+                GetComponentInChildren<UserHand>().SetHandState(UserHand.HandState.WaitForTurn);
             }
         }
     }
