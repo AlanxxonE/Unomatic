@@ -12,6 +12,8 @@ public class GameManager : MonoBehaviour
 
     private bool unoCall = false;
 
+    private bool unoAICall = false;
+
     private GameObject DealingTextRef;
 
     private GameObject AITextRef;
@@ -106,6 +108,13 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void AICallUnoButton()
+    {
+        StartCoroutine(UnosTextRoutine());
+
+        unoAICall = false;
+    }
+
     public void StartOfTurn(UserHand handOfUser)
     {
         //Debug.Log("STARTOFTURN!");
@@ -161,6 +170,42 @@ public class GameManager : MonoBehaviour
         deckRef.GetComponent<DeckBehaviour>().GetAIHand().SetHandState(UserHand.HandState.PlayCard);
 
         deckRef.GetComponent<DeckBehaviour>().GetAIHand().GetComponentInParent<AIBehaviour>().CheckAIHand();
+
+        if(deckRef.GetComponent<DeckBehaviour>().GetAIHand().GetCardHand().Count == 1)
+        {
+            float callPercentage = Random.Range(0, 1f);
+
+            Debug.Log(callPercentage);
+
+            if (AIBehaviour.difficultyLevel == AIBehaviour.DifficultyLevels.EASY)
+            {
+                if(callPercentage > 0.6f) 
+                {
+                    unoAICall = true;
+                }
+            }
+            else if (AIBehaviour.difficultyLevel == AIBehaviour.DifficultyLevels.MEDIUM)
+            {
+                if(callPercentage > 0.4f)
+                {
+                    unoAICall = true;
+                }
+            }
+            else if(AIBehaviour.difficultyLevel == AIBehaviour.DifficultyLevels.HARD)
+            {
+                unoAICall = true;
+            }
+        }
+
+        if(deckRef.GetComponent<DeckBehaviour>().GetAIHand().GetCardHand().Count == 1 && unoAICall != true)
+        {
+            deckRef.GetComponent<DeckBehaviour>().GetAIHand().DrawCardInHand(deckRef.GetComponent<DeckBehaviour>().GetAIHand().GetCardHand().Count);
+            deckRef.GetComponent<DeckBehaviour>().GetAIHand().DrawCardInHand(deckRef.GetComponent<DeckBehaviour>().GetAIHand().GetCardHand().Count);
+        }
+        else if(deckRef.GetComponent<DeckBehaviour>().GetAIHand().GetCardHand().Count == 1 && unoAICall == true)
+        {
+            AICallUnoButton();
+        }
 
         StartOfTurn(deckRef.GetComponent<DeckBehaviour>().GetAIHand());
 
