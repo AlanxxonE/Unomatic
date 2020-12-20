@@ -67,10 +67,7 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (deckRef.GetComponent<DeckBehaviour>().GetUserHand().GetCardHand().Count == 0 && unoCall == true)
-        {
-            SceneManager.LoadScene(0, LoadSceneMode.Single);
-        }
+
     }
 
     public void checkInteractiveButton(bool checkButton)
@@ -113,6 +110,11 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("STARTOFTURN!");
 
+        if(handOfUser.transform.root.gameObject.tag == "AI" && handOfUser.GetCardHand().Count == 0)
+        {
+            SceneManager.LoadScene(0, LoadSceneMode.Single);
+        }
+
         if(handOfUser.GetCardHand().Count <= 2)
         {
             checkInteractiveButton(true);
@@ -135,6 +137,11 @@ public class GameManager : MonoBehaviour
                 handOfUser.DrawCardInHand(handOfUser.GetCardHand().Count);
             }
         }
+
+        if (handOfUser.GetCardHand().Count == 0 && unoCall == true)
+        {
+            SceneManager.LoadScene(0, LoadSceneMode.Single);
+        }
     }
 
     public IEnumerator AITurn()
@@ -154,6 +161,8 @@ public class GameManager : MonoBehaviour
         deckRef.GetComponent<DeckBehaviour>().GetAIHand().SetHandState(UserHand.HandState.PlayCard);
 
         deckRef.GetComponent<DeckBehaviour>().GetAIHand().GetComponentInParent<AIBehaviour>().CheckAIHand();
+
+        StartOfTurn(deckRef.GetComponent<DeckBehaviour>().GetAIHand());
 
         if (deckRef.GetComponent<DeckBehaviour>().GetUserHand().GetCardHand().Count != 0 && deckRef.GetComponent<DeckBehaviour>().GetAIHand().GetCardHand().Count != 0)
         {

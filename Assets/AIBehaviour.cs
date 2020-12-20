@@ -37,8 +37,6 @@ public class AIBehaviour : MonoBehaviour
 
     private List<List<GameObject>> orderOfColors = new List<List<GameObject>>();
 
-    private List<List<GameObject>> originalOrderList = new List<List<GameObject>>();
-
     // Start is called before the first frame update
     void Start()
     {
@@ -118,25 +116,44 @@ public class AIBehaviour : MonoBehaviour
                     }
                 }
 
-                for (int i = 0; i < orderOfColors.Count; i++)
-                {
-                    originalOrderList.Add(orderOfColors[i]);
-                }
-
-                Debug.Log("UNSORTED ----------------------");
-
-                Debug.Log(yellowCardList.Count);
-                Debug.Log(greenCardList.Count);
-                Debug.Log(blueCardList.Count);
-                Debug.Log(redCardList.Count);
-
-                Debug.Log("SORTED !!!!!!!!!!!!!!!!!!!!!!!!!!!");
-
                 SortOrderList();
 
                 for (int i = 0; i < orderOfColors.Count; i++)
                 {
-                    Debug.Log(orderOfColors[i].Count);
+                    for (int j = 0; j < orderOfColors[i].Count; j++)
+                    {
+                        if (orderOfColors[i][j].GetComponent<CardBehaviour>().GetUniqueCardIDNumber() == GetComponentInChildren<UserHand>().GetDeck().GetComponent<DeckBehaviour>().GetPileOfCards().GetCardRef().GetComponent<CardBehaviour>().GetUniqueCardIDNumber())
+                        {
+                            orderOfColors[i][j].GetComponent<CardBehaviour>().PlayCard();
+
+                            goto NextTurn;
+                        }
+
+                        if(j == orderOfColors[i].Count - 1)
+                        {
+                            if (orderOfColors[i][j].GetComponent<CardBehaviour>().GetUniqueCardIDColor() == GetComponentInChildren<UserHand>().GetDeck().GetComponent<DeckBehaviour>().GetPileOfCards().GetCardRef().GetComponent<CardBehaviour>().GetUniqueCardIDColor())
+                            {
+                                orderOfColors[i][j].GetComponent<CardBehaviour>().PlayCard();
+
+                                goto NextTurn;
+                            }
+                        }
+                    }
+                }
+
+                GetComponentInChildren<UserHand>().DrawCardInHand(GetComponentInChildren<UserHand>().GetCardHand().Count);
+
+                if (GetComponentInChildren<UserHand>().GetCardHand()[GetComponentInChildren<UserHand>().GetCardHand().Count - 1].GetComponent<CardBehaviour>().GetUniqueCardIDNumber() == GetComponentInChildren<UserHand>().GetDeck().GetComponent<DeckBehaviour>().GetPileOfCards().GetCardRef().GetComponent<CardBehaviour>().GetUniqueCardIDNumber()
+                || GetComponentInChildren<UserHand>().GetCardHand()[GetComponentInChildren<UserHand>().GetCardHand().Count - 1].GetComponent<CardBehaviour>().GetUniqueCardIDColor() == GetComponentInChildren<UserHand>().GetDeck().GetComponent<DeckBehaviour>().GetPileOfCards().GetCardRef().GetComponent<CardBehaviour>().GetUniqueCardIDColor())
+                {
+                    GetComponentInChildren<UserHand>().GetCardHand()[GetComponentInChildren<UserHand>().GetCardHand().Count - 1].GetComponent<CardBehaviour>().PlayCard();
+                }
+
+            NextTurn:
+
+                for(int i = 0; i< orderOfColors.Count; i++)
+                {
+                    orderOfColors[i].Clear();
                 }
             }
         }
