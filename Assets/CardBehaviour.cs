@@ -241,11 +241,6 @@ public class CardBehaviour : MonoBehaviour
 
         userCardHand.UpdateCardHand(userCardHandList);
 
-        if(userCardHand.GetCardHand().Count == 0)
-        {
-            userCardHand.GetDeck().GetComponent<DeckBehaviour>().GetGMRef().FinishGame();
-        }
-
         if (userCardHand.GetUserTag() != "AI")
         {
             StartCoroutine(userCardHand.GetDeck().GetComponent<DeckBehaviour>().GetGMRef().AITurn());

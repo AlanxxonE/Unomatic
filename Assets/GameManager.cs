@@ -114,6 +114,8 @@ public class GameManager : MonoBehaviour
     {
         StartCoroutine(UnosTextRoutine());
 
+        GetComponent<AudioSource>().Play();
+
         unoAICall = false;
     }
 
@@ -147,6 +149,11 @@ public class GameManager : MonoBehaviour
 
     public IEnumerator AITurn()
     {
+        if (deckRef.GetComponent<DeckBehaviour>().GetUserHand().GetCardHand().Count == 0)
+        {
+            FinishGame();
+        }
+
         StartCoroutine(AITextRoutine());
 
         deckRef.GetComponent<DeckBehaviour>().GetUserHand().SetHandState(UserHand.HandState.WaitForTurn);
@@ -199,6 +206,11 @@ public class GameManager : MonoBehaviour
             AICallUnoButton();
         }
 
+        if (deckRef.GetComponent<DeckBehaviour>().GetAIHand().GetCardHand().Count == 0)
+        {
+            FinishGame();
+        }
+
         StartOfTurn(deckRef.GetComponent<DeckBehaviour>().GetAIHand());
 
         if (deckRef.GetComponent<DeckBehaviour>().GetUserHand().GetCardHand().Count != 0 && deckRef.GetComponent<DeckBehaviour>().GetAIHand().GetCardHand().Count != 0)
@@ -213,7 +225,7 @@ public class GameManager : MonoBehaviour
     {
         if (unoCall == true)
         {
-            SceneManager.LoadScene(0, LoadSceneMode.Single);
+            StartCoroutine(FinishGameRoutine());
         }
     }
 
@@ -249,4 +261,20 @@ public class GameManager : MonoBehaviour
 
         UnosCallRef.SetActive(false);
     }
+
+    private IEnumerator FinishGameRoutine()
+    {
+        GetComponent<AudioSource>().Play();
+
+        yield return new WaitForSeconds(0.2f);
+
+        GetComponent<AudioSource>().Play();
+
+        yield return new WaitForSeconds(0.4f);
+
+        GetComponent<AudioSource>().Play();
+
+        SceneManager.LoadScene(0, LoadSceneMode.Single);
+    }
+    
 }
