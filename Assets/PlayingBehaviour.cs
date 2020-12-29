@@ -24,6 +24,8 @@ public class PlayingBehaviour : MonoBehaviour
 
         cardSpeed = 4;
 
+        this.GetComponent<AudioSource>().Play();
+
         StartCoroutine(SelfDestruct());
     }
 

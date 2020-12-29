@@ -104,6 +104,8 @@ public class GameManager : MonoBehaviour
         {
             StartCoroutine(UnosTextRoutine());
 
+            GetComponent<AudioSource>().Play();
+
             unoCall = true;
         }
     }
@@ -118,11 +120,6 @@ public class GameManager : MonoBehaviour
     public void StartOfTurn(UserHand handOfUser)
     {
         //Debug.Log("STARTOFTURN!");
-
-        if(handOfUser.transform.root.gameObject.tag == "AI" && handOfUser.GetCardHand().Count == 0)
-        {
-            SceneManager.LoadScene(0, LoadSceneMode.Single);
-        }
 
         if(handOfUser.GetCardHand().Count <= 2)
         {
@@ -145,11 +142,6 @@ public class GameManager : MonoBehaviour
                 handOfUser.DrawCardInHand(handOfUser.GetCardHand().Count);
                 handOfUser.DrawCardInHand(handOfUser.GetCardHand().Count);
             }
-        }
-
-        if (handOfUser.GetCardHand().Count == 0 && unoCall == true)
-        {
-            SceneManager.LoadScene(0, LoadSceneMode.Single);
         }
     }
 
@@ -214,6 +206,14 @@ public class GameManager : MonoBehaviour
             StartOfTurn(deckRef.GetComponent<DeckBehaviour>().GetUserHand());
 
             deckRef.GetComponent<DeckBehaviour>().GetUserHand().SetHandState(UserHand.HandState.PlayCard);
+        }
+    }
+
+    public void FinishGame()
+    {
+        if (unoCall == true)
+        {
+            SceneManager.LoadScene(0, LoadSceneMode.Single);
         }
     }
 
