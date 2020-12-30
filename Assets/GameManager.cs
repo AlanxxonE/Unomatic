@@ -223,12 +223,9 @@ public class GameManager : MonoBehaviour
 
     public void FinishGame()
     {
-        if (unoCall == true || unoAICall == true)
-        {
-            deckRef.GetComponent<DeckBehaviour>().GetUserHand().SetHandState(UserHand.HandState.WaitForTurn);
+        deckRef.GetComponent<DeckBehaviour>().GetUserHand().SetHandState(UserHand.HandState.WaitForTurn);
 
-            StartCoroutine(FinishGameRoutine());
-        }
+        StartCoroutine(FinishGameRoutine());
     }
 
     private IEnumerator AITextRoutine()
