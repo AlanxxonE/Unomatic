@@ -223,7 +223,7 @@ public class GameManager : MonoBehaviour
 
     public void FinishGame()
     {
-        if (unoCall == true)
+        if (unoCall == true || unoAICall == true)
         {
             deckRef.GetComponent<DeckBehaviour>().GetUserHand().SetHandState(UserHand.HandState.WaitForTurn);
 
