@@ -225,6 +225,8 @@ public class GameManager : MonoBehaviour
     {
         if (unoCall == true)
         {
+            deckRef.GetComponent<DeckBehaviour>().GetUserHand().SetHandState(UserHand.HandState.WaitForTurn);
+
             StartCoroutine(FinishGameRoutine());
         }
     }
