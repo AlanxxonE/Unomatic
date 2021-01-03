@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.Profiling;
 
 public class GameManager : MonoBehaviour
 {
@@ -149,6 +150,9 @@ public class GameManager : MonoBehaviour
 
     public IEnumerator AITurn()
     {
+
+        Profiler.BeginSample("AITurn");
+
         if (deckRef.GetComponent<DeckBehaviour>().GetUserHand().GetCardHand().Count == 0)
         {
             FinishGame();
@@ -219,6 +223,8 @@ public class GameManager : MonoBehaviour
 
             deckRef.GetComponent<DeckBehaviour>().GetUserHand().SetHandState(UserHand.HandState.PlayCard);
         }
+
+        Profiler.EndSample();
     }
 
     public void FinishGame()
